@@ -4,11 +4,12 @@
 #include "BasicActor.h"
 
 #include "Components/ArrowComponent.h"
-#include "Preferences/PersonaOptions.h"
+
 
 
 ABasicActor::ABasicActor()
 {
+
 	_Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	RootComponent = _Root;
 
@@ -17,6 +18,9 @@ ABasicActor::ABasicActor()
 
 	_Arrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
 	_Arrow->SetupAttachment(_Root);
+
+	_RotatingMovement = CreateDefaultSubobject<URotatingMovementComponent>(TEXT("RotatingMovement"));
+	_RotatingMovement->SetupAttachment(_Root);
 }
 
 
