@@ -4,9 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "GameFramework/RotatingMovementComponent.h"
 #include "BasicActor.generated.h"
 
+class URotatingMovementComponent;
 class UArrowComponent;
 
 UCLASS(Abstract)
@@ -25,6 +25,6 @@ protected:
 	TObjectPtr<UStaticMeshComponent> _Mesh;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UArrowComponent> _Arrow;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<URotatingMovementComponent> _RotatingMovement;
 };

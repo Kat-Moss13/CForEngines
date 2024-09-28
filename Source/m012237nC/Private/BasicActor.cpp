@@ -4,7 +4,7 @@
 #include "BasicActor.h"
 
 #include "Components/ArrowComponent.h"
-
+#include "GameFramework/RotatingMovementComponent.h"
 
 
 ABasicActor::ABasicActor()
@@ -20,7 +20,7 @@ ABasicActor::ABasicActor()
 	_Arrow->SetupAttachment(_Root);
 
 	_RotatingMovement = CreateDefaultSubobject<URotatingMovementComponent>(TEXT("RotatingMovement"));
-	_RotatingMovement->SetupAttachment(_Root);
+	_RotatingMovement->SetUpdatedComponent(_Root);
 }
 
 
