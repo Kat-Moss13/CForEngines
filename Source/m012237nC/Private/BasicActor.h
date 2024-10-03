@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "BasicActor.generated.h"
 
+class UBoxComponent;
 class URotatingMovementComponent;
 class UArrowComponent;
 
@@ -20,11 +21,17 @@ public:
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TObjectPtr<USceneComponent> _Root;
+	TObjectPtr<UBoxComponent> _Collider;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UStaticMeshComponent> _Mesh;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UArrowComponent> _Arrow;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TObjectPtr<URotatingMovementComponent> _RotatingMovement;
+
+	virtual void BeginPlay() override;
+	
+	UFUNCTION()
+	void Handle_ColliderHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
+		UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	
 };
