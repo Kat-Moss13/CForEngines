@@ -1,5 +1,7 @@
 ﻿
 #include "GM_FPS.h"
+
+#include "GameRule.h"
 #include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
  
@@ -35,6 +37,20 @@ void AGM_FPS::Logout(AController* Exiting)
  
 void AGM_FPS::HandleMatchIsWaitingToStart()
 {
+	TArray<UActorComponent*> outComponents;
+	GetComponents(outComponents);
+	for(UActorComponent* comp : outComponents)
+	{
+		if(UGameRule* rule = Cast<UGameRule>(comp))
+		{
+			_GameRuleManagers.Add(rule);
+			rule->Init();
+			rule->OnComplete.AddUniqueDynamic(this, &AGM_FPS::Handle_GameRuleComplete);
+			rule->OnPointsScored.AddUniqueDynamic(this, &AGM_FPS::Handle_GameRulePointsScored);
+			_GameRulesLeft++;
+		}
+	}
+	
 	GetWorld()->GetTimerManager().SetTimer(_TimerDecreaseCountdown, this, &AGM_FPS::DecreaseCountdown, 1.f, false);
 	Super::HandleMatchIsWaitingToStart();
 }
@@ -92,8 +108,18 @@ void AGM_FPS::DecreaseCountdown()
 		GetWorld()->GetTimerManager().SetTimer(_TimerDecreaseCountdown, this, &AGM_FPS::DecreaseCountdown, 1.f, false);
 	}
 }
- 
- 
+
+void AGM_FPS::Handle_GameRuleComplete()
+{
+	
+}
+
+void AGM_FPS::Handle_GameRulePointsScored(AController* scorer, int points)
+{
+	
+}
+
+
 bool AGM_FPS::ReadyToStartMatch_Implementation() { return false; }
  
 bool AGM_FPS::ReadyToEndMatch_Implementation() { return false; }

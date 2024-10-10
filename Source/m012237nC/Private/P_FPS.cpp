@@ -18,6 +18,13 @@ AP_FPS::AP_FPS()
 	_Capsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule"));
 	_Capsule->SetupAttachment(RootComponent);
 }
+void AP_FPS::BeginPlay()
+{
+	Super::BeginPlay();
+	_Health->OnDead.AddUniqueDynamic(this, &AP_FPS::Handle_HealthDead);
+	_Health->OnDamaged.AddUniqueDynamic(this, &AP_FPS::Handle_HealthDamaged);
+	
+}
 
 void AP_FPS::Input_FirePressed_Implementation()
 {
@@ -55,6 +62,16 @@ void AP_FPS::Input_Move_Implementation(FVector2D value)
 UInputMappingContext* AP_FPS::GetMappingContext_Implementation()
 {
 	return _InputMapping;
+}
+
+
+
+void AP_FPS::Handle_HealthDead(AController* causer)
+{
+}
+
+void AP_FPS::Handle_HealthDamaged(float current, float max, float change)
+{
 }
 
 
