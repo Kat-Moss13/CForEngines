@@ -10,6 +10,8 @@ class UHealthComponent;
 class UCharacterMovementComponent;
 class UCameraComponent;
 class UCapsuleComponent;
+class AWeapon_Base;
+
 UCLASS(Abstract)
 class M012237NC_API AP_FPS : public ACharacter, public IInputable
 {
@@ -43,6 +45,13 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UCapsuleComponent> _Capsule;
+	
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+	TObjectPtr<USceneComponent> _WeaponAttachPoint;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<AWeapon_Base> _DefaultWeapon;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<AWeapon_Base> _WeaponRef;
 
 private:
 	UFUNCTION()

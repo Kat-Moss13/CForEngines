@@ -3,6 +3,7 @@
 
 #include "P_FPS.h"
 #include "HealthComponent.h"
+#include "Weapon_Base.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 
@@ -17,23 +18,40 @@ AP_FPS::AP_FPS()
 
 	_Capsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule"));
 	_Capsule->SetupAttachment(RootComponent);
+	
+	_WeaponAttachPoint = CreateDefaultSubobject<USceneComponent>(TEXT("Weapon Attach"));
+	_WeaponAttachPoint->SetupAttachment(_Camera);
 }
 void AP_FPS::BeginPlay()
 {
 	Super::BeginPlay();
 	_Health->OnDead.AddUniqueDynamic(this, &AP_FPS::Handle_HealthDead);
 	_Health->OnDamaged.AddUniqueDynamic(this, &AP_FPS::Handle_HealthDamaged);
-	
+
+	if(_DefaultWeapon)
+	{
+		FActorSpawnParameters spawnParams;
+		spawnParams.Owner = this;
+		spawnParams.Instigator = this;
+		_WeaponRef = GetWorld()->SpawnActor<AWeapon_Base>(_DefaultWeapon, _WeaponAttachPoint->GetComponentTransform(), spawnParams);
+		_WeaponRef->AttachToComponent(_WeaponAttachPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
+	}
 }
 
 void AP_FPS::Input_FirePressed_Implementation()
 {
-	//TODO: make it fire
+	if(_WeaponRef)
+	{
+		_WeaponRef->StartFire();
+	}
 }
 
 void AP_FPS::Input_FireReleased_Implementation()
 {
-	//TODO: stop firing
+	if(_WeaponRef)
+    {
+       _WeaponRef->StopFire();
+    }
 }
 
 void AP_FPS::Input_JumpPressed_Implementation()
