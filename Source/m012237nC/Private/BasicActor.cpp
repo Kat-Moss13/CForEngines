@@ -3,8 +3,10 @@
 
 #include "BasicActor.h"
 
+#include "HealthComponent.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 ABasicActor::ABasicActor()
@@ -19,6 +21,8 @@ ABasicActor::ABasicActor()
 	_Arrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
 	_Arrow->SetupAttachment(RootComponent);
 	
+	_Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
+	
 }
 
 void ABasicActor::BeginPlay()
@@ -26,12 +30,13 @@ void ABasicActor::BeginPlay()
 	Super::BeginPlay();
 
 	_Collider->OnComponentHit.AddUniqueDynamic(this, &ABasicActor::Handle_ColliderHit);
+
 }
 
 void ABasicActor::Handle_ColliderHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	UE_LOG(LogTemp, Display, TEXT("Hit-------------------------------------------"));
+	
 }
 
 

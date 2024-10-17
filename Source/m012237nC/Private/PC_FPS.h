@@ -3,15 +3,17 @@
 
 #include "CoreMinimal.h"
 #include "InputActionValue.h"
+#include "Scorable.h"
 #include "GameFramework/PlayerController.h"
 #include "PC_FPS.generated.h"
 
 struct FInputActionValue;
 class UInputAction;
+class UWidget_HUD;
 
 
 UCLASS()
-class M012237NC_API APC_FPS : public APlayerController
+class M012237NC_API APC_FPS : public APlayerController , public IScorable
 {
 
 	GENERATED_BODY()
@@ -28,6 +30,14 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> _FireAction;
+
+	
+	
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UWidget_HUD> _HUDWidgetClass;
+	TObjectPtr<UWidget_HUD> _HUDWidget;
+
+	virtual void BeginPlay() override;
 
 	virtual void SetupInputComponent() override;
 

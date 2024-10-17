@@ -2,6 +2,7 @@
 #include "GM_FPS.h"
 
 #include "GameRule.h"
+#include "Scorable.h"
 #include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
  
@@ -116,7 +117,10 @@ void AGM_FPS::Handle_GameRuleComplete()
 
 void AGM_FPS::Handle_GameRulePointsScored(AController* scorer, int points)
 {
-	
+	if(UKismetSystemLibrary::DoesImplementInterface(scorer, UScorable::StaticClass()))
+	{
+		IScorable::Execute_AddScore(scorer, points);
+	}
 }
 
 

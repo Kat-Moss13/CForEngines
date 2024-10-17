@@ -30,7 +30,7 @@ void AProjectile::Handle_Hit(UPrimitiveComponent* HitComp, AActor* OtherActor, U
  
 		if(OtherComp->IsSimulatingPhysics())
 		{
-			OtherComp->AddImpulseAtLocation(GetVelocity() * 100.f, GetActorLocation());   
+			OtherComp->AddImpulseAtLocation(GetVelocity() * 10.f, GetActorLocation());   
 		}
 		Destroy();
 	}

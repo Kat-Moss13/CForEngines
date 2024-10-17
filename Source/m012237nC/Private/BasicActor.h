@@ -9,6 +9,7 @@
 class UBoxComponent;
 class URotatingMovementComponent;
 class UArrowComponent;
+class UHealthComponent;
 
 UCLASS(Abstract)
 class M012237NC_API ABasicActor : public AActor
@@ -26,6 +27,8 @@ protected:
 	TObjectPtr<UStaticMeshComponent> _Mesh;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UArrowComponent> _Arrow;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	TObjectPtr<UHealthComponent> _Health;
 
 	virtual void BeginPlay() override;
 	

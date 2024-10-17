@@ -86,10 +86,12 @@ UInputMappingContext* AP_FPS::GetMappingContext_Implementation()
 
 void AP_FPS::Handle_HealthDead(AController* causer)
 {
+	
 }
 
 void AP_FPS::Handle_HealthDamaged(float current, float max, float change)
 {
+	
 }
 
 
