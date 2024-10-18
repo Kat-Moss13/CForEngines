@@ -6,6 +6,7 @@
 #include "Inputable.h"
 #include "Widget_HUD.h"
 #include "Blueprint/UserWidget.h"
+#include "DynamicMesh/DynamicMesh3.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 void APC_FPS::BeginPlay()
@@ -32,6 +33,12 @@ void APC_FPS::SetupInputComponent()
 		EIP->BindAction(_FireAction, ETriggerEvent::Completed, this, &APC_FPS::FireReleased);
 	}
 	
+}
+
+void APC_FPS::AddScore_Implementation(int points)
+{
+	PlayerPoints += points;
+	_HUDWidget->UpdateScore(PlayerPoints);
 }
 
 void APC_FPS::Look(const FInputActionValue& value)

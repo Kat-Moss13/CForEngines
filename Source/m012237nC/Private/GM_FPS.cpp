@@ -112,7 +112,7 @@ void AGM_FPS::DecreaseCountdown()
 
 void AGM_FPS::Handle_GameRuleComplete()
 {
-	
+	_CanExit = true;
 }
 
 void AGM_FPS::Handle_GameRulePointsScored(AController* scorer, int points)

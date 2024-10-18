@@ -32,6 +32,8 @@ protected:
 	TSubclassOf<APawn> _MatchPawn;
 
 	int _GameRulesLeft;
+	bool _CanExit;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<TObjectPtr<UGameRule>> _GameRuleManagers;
 	

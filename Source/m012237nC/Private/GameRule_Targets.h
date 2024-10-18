@@ -5,7 +5,7 @@
 #include "GameRule_Targets.generated.h"
 
 class UTargetComponent;
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGRTargetsRequestTargetsSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGRTargetRequestTargetsSignature);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class M012237NC_API UGameRule_Targets : public UGameRule
@@ -16,7 +16,7 @@ public:
 
 	UGameRule_Targets();
 
-	static inline FGRTargetsRequestTargetsSignature OnRequestTargets;
+	static inline FGRTargetRequestTargetsSignature OnRequestTargets;
 
 	virtual void Init() override;
 

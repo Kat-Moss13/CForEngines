@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "GameRule.generated.h"
+class UGameRule;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGameRuleCompleteSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FGameRulePointsScoredSignature, AController*, scorer, int, points);
