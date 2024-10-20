@@ -31,14 +31,20 @@ void APC_FPS::SetupInputComponent()
 		EIP->BindAction(_JumpAction, ETriggerEvent::Completed, this, &APC_FPS::JumpReleased);
 		EIP->BindAction(_FireAction, ETriggerEvent::Started, this, &APC_FPS::FirePressed);
 		EIP->BindAction(_FireAction, ETriggerEvent::Completed, this, &APC_FPS::FireReleased);
+		EIP->BindAction(_InteractAction, ETriggerEvent::Triggered, this, &APC_FPS::InteractPressed);
 	}
 	
 }
 
 void APC_FPS::AddScore_Implementation(int points)
 {
-	PlayerPoints += points;
-	_HUDWidget->UpdateScore(PlayerPoints);
+	_PlayerPoints += points;
+	_HUDWidget->UpdateScore(_PlayerPoints);
+}
+
+void APC_FPS::ExitTrue_Implementation()
+{
+	_CanExit = true;
 }
 
 void APC_FPS::Look(const FInputActionValue& value)
@@ -110,6 +116,17 @@ void APC_FPS::FireReleased()
 	}
 }
 
+void APC_FPS::InteractPressed()
+{
+	if(APawn* currentPawn = GetPawn())
+	{
+		if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
+		{
+			IInputable::Execute_Input_InteractPressed(currentPawn, _CanExit);
+		}
+	}
+}
+
 void APC_FPS::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
@@ -122,4 +139,6 @@ void APC_FPS::OnPossess(APawn* InPawn)
 		}
 	}
 }
+
+
 

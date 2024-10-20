@@ -31,7 +31,11 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> _FireAction;
 
-	int PlayerPoints;
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> _InteractAction;
+
+	int _PlayerPoints;
+	bool _CanExit = false;
 	
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UWidget_HUD> _HUDWidgetClass;
@@ -42,6 +46,7 @@ protected:
 	virtual void SetupInputComponent() override;
 
 	virtual void AddScore_Implementation(int points) override;
+	virtual void ExitTrue_Implementation() override;
 
 	void Look(const FInputActionValue& value);
 	void Move(const FInputActionValue& value);
@@ -49,8 +54,8 @@ protected:
 	void JumpReleased();
 	void FirePressed();
 	void FireReleased();
+	void InteractPressed();
 
 	virtual void OnPossess(APawn* InPawn) override;
 
-	
 };

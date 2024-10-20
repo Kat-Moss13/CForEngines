@@ -19,4 +19,7 @@ class M012237NC_API IScorable
 public:
 	UFUNCTION(BlueprintNativeEvent)
 	void AddScore(int points);
+
+	UFUNCTION(BlueprintNativeEvent)
+	void ExitTrue();
 };

@@ -38,6 +38,9 @@ public:
 	void Input_FireReleased();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Input_InteractPressed(bool canExit);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UInputMappingContext* GetMappingContext();
 	
 };

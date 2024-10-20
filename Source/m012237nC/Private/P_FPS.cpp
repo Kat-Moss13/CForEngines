@@ -1,14 +1,15 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-
+﻿
 #include "P_FPS.h"
 #include "HealthComponent.h"
+#include "Interact.h"
 #include "Weapon_Base.h"
 #include "Camera/CameraComponent.h"
+#include "Components/ArrowComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 
-// Sets default values
+
 AP_FPS::AP_FPS()
 {
 	_Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
@@ -21,6 +22,9 @@ AP_FPS::AP_FPS()
 	
 	_WeaponAttachPoint = CreateDefaultSubobject<USceneComponent>(TEXT("Weapon Attach"));
 	_WeaponAttachPoint->SetupAttachment(_Camera);
+
+	_InteractArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Interact Arrow"));
+	_InteractArrow->SetupAttachment(_Camera);
 }
 void AP_FPS::BeginPlay()
 {
@@ -74,6 +78,30 @@ void AP_FPS::Input_Move_Implementation(FVector2D value)
 {
 	AddMovementInput(FVector::VectorPlaneProject(_Camera->GetForwardVector(), FVector::UpVector).GetSafeNormal(), value.Y);
 	AddMovementInput(_Camera->GetRightVector(), value.X);
+	
+}
+
+void AP_FPS::Input_InteractPressed_Implementation(bool canExit)
+{
+	UWorld* const world = GetWorld();
+	if(world == nullptr) { return; }
+ 
+	FHitResult hit(ForceInit);
+	FVector start = _InteractArrow->GetComponentLocation();
+	FVector end = start + (_InteractArrow->GetForwardVector() * 1000);
+	TArray<AActor*> ActorsToIgnore;
+ 
+	if(UKismetSystemLibrary::LineTraceSingle(world, start, end,
+	   UEngineTypes::ConvertToTraceType(ECC_GameTraceChannel2), false,
+	   ActorsToIgnore, EDrawDebugTrace::ForDuration, hit, true, FLinearColor::Red,
+	   FLinearColor::Green, 5))
+	{
+
+		if(UKismetSystemLibrary::DoesImplementInterface(hit.GetActor(), UInteract::StaticClass()))
+		{
+			IInteract::Execute_Interact(hit.GetActor(), this->Controller, canExit);
+		}
+	}
 	
 }
 

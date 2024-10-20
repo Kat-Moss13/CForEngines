@@ -10,6 +10,7 @@ class UHealthComponent;
 class UCharacterMovementComponent;
 class UCameraComponent;
 class UCapsuleComponent;
+class UArrowComponent;
 class AWeapon_Base;
 
 UCLASS(Abstract)
@@ -27,6 +28,7 @@ public:
 	virtual void Input_JumpReleased_Implementation() override;
 	virtual void Input_Look_Implementation(FVector2D value) override;
 	virtual void Input_Move_Implementation(FVector2D value) override;
+	virtual void Input_InteractPressed_Implementation(bool canExit) override;
 
 	virtual UInputMappingContext* GetMappingContext_Implementation() override;
 
@@ -52,6 +54,9 @@ protected:
 	TSubclassOf<AWeapon_Base> _DefaultWeapon;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<AWeapon_Base> _WeaponRef;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UArrowComponent> _InteractArrow;
 
 private:
 	UFUNCTION()

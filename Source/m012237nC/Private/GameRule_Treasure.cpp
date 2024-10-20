@@ -30,9 +30,9 @@ void UGameRule_Treasure::Handle_TreasureRemoved(UTreasureComponent* treasure , A
 	_AmountRemaining--;
 	_NeededTreasure -= treasureValue;
 	BroadcastPointsScores(causer, treasureValue);
-	if(_AmountRemaining <= _NeededTreasure)
+	if(_NeededTreasure <= 0)
 	{
-		BroadcastComplete();
+		BroadcastComplete(causer);
 	}
 }
 

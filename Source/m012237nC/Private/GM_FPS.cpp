@@ -110,9 +110,12 @@ void AGM_FPS::DecreaseCountdown()
 	}
 }
 
-void AGM_FPS::Handle_GameRuleComplete()
+void AGM_FPS::Handle_GameRuleComplete(AController* scorer)
 {
-	_CanExit = true;
+	if(UKismetSystemLibrary::DoesImplementInterface(scorer, UScorable::StaticClass()))
+	{
+		IScorable::Execute_ExitTrue(scorer);
+	}
 }
 
 void AGM_FPS::Handle_GameRulePointsScored(AController* scorer, int points)

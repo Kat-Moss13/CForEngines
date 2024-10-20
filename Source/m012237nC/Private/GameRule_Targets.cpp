@@ -33,7 +33,7 @@ void UGameRule_Targets::Handle_TargetDestroyed(UTargetComponent* target, AContro
 	BroadcastPointsScores(causer, targetValue);
 	if(_AmountRemaining == 0)
 	{
-		BroadcastComplete();
+		BroadcastComplete(causer);
 	}
 }
 

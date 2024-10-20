@@ -18,6 +18,6 @@ class M012237NC_API IInteract
 	
 public:
 	UFUNCTION(BlueprintNativeEvent)
-	void Interact(AController* causer);
+	void Interact(AController* causer, bool canExit);
 	
 };

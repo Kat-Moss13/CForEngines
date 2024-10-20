@@ -13,9 +13,9 @@ void UGameRule::Init()
 	
 }
 
-void UGameRule::BroadcastComplete()
+void UGameRule::BroadcastComplete(AController* scorer)
 {
-	OnComplete.Broadcast();
+	OnComplete.Broadcast(scorer);
 }
 
 void UGameRule::BroadcastPointsScores(AController* scorer, int points)

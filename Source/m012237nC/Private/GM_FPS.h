@@ -51,7 +51,7 @@ protected:
 
 private:
 	UFUNCTION()
-	void Handle_GameRuleComplete();
+	void Handle_GameRuleComplete(AController* scorer);
 	UFUNCTION()
 	void Handle_GameRulePointsScored(AController* scorer, int points);
 };
