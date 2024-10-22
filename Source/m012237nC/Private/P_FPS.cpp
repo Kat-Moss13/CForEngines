@@ -42,6 +42,11 @@ void AP_FPS::BeginPlay()
 	}
 }
 
+UBehaviorTree* AP_FPS::GetBehaviorTree_Implementation()
+{
+	return _BehaviorTree;
+}
+
 void AP_FPS::Input_FirePressed_Implementation()
 {
 	if(_WeaponRef)

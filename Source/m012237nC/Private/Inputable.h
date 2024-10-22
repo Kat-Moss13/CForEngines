@@ -5,7 +5,8 @@
 #include "UObject/Interface.h"
 #include "Inputable.generated.h"
 
-// This class does not need to be modified.
+class UBehaviorTree;
+
 UINTERFACE()
 class UInputable : public UInterface
 {
@@ -42,5 +43,8 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UInputMappingContext* GetMappingContext();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	UBehaviorTree* GetBehaviorTree();
 	
 };

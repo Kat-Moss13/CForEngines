@@ -31,10 +31,13 @@ public:
 	virtual void Input_InteractPressed_Implementation(bool canExit) override;
 
 	virtual UInputMappingContext* GetMappingContext_Implementation() override;
+	
+	virtual void BeginPlay() override;
 
+	virtual UBehaviorTree* GetBehaviorTree_Implementation() override;
+	
 protected:
 
-	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UCameraComponent> _Camera;
@@ -47,6 +50,9 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UCapsuleComponent> _Capsule;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UBehaviorTree> _BehaviorTree;
 	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<USceneComponent> _WeaponAttachPoint;
