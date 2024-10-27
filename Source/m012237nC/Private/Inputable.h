@@ -42,6 +42,30 @@ public:
 	void Input_InteractPressed(bool canExit);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Input_CrouchPressed();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Input_CrouchReleased();
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Input_SprintPressed();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Input_SprintReleased();
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Input_LeanLeftPressed();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Input_LeanRightPressed();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Input_LeanLeftReleased();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Input_LeanRightReleased();
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UInputMappingContext* GetMappingContext();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)

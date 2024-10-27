@@ -6,6 +6,7 @@
 #include "Inputable.h"
 #include "P_FPS.generated.h"
 
+class UWeaponType;
 class UHealthComponent;
 class UCharacterMovementComponent;
 class UCameraComponent;
@@ -22,6 +23,11 @@ public:
 	
 	AP_FPS();
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character Movement")
+	float SprintSpeedMultiplier;
+
+	bool isCrouched;
+
 	virtual void Input_FirePressed_Implementation() override;
 	virtual void Input_FireReleased_Implementation() override;
 	virtual void Input_JumpPressed_Implementation() override;
@@ -29,6 +35,14 @@ public:
 	virtual void Input_Look_Implementation(FVector2D value) override;
 	virtual void Input_Move_Implementation(FVector2D value) override;
 	virtual void Input_InteractPressed_Implementation(bool canExit) override;
+	virtual void Input_CrouchPressed_Implementation() override;
+	virtual void Input_CrouchReleased_Implementation() override;
+	virtual void Input_SprintPressed_Implementation() override;
+	virtual void Input_SprintReleased_Implementation() override;
+	virtual void Input_LeanLeftPressed_Implementation() override;
+	virtual void Input_LeanLeftReleased_Implementation() override;
+	virtual void Input_LeanRightPressed_Implementation() override;
+	virtual void Input_LeanRightReleased_Implementation() override;
 
 	virtual UInputMappingContext* GetMappingContext_Implementation() override;
 	
@@ -60,6 +74,9 @@ protected:
 	TSubclassOf<AWeapon_Base> _DefaultWeapon;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<AWeapon_Base> _WeaponRef;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UWeaponType> _DefaultWeaponType;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UArrowComponent> _InteractArrow;

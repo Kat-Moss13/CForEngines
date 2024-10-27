@@ -34,6 +34,18 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> _InteractAction;
 
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> _CrouchAction;
+
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> _SprintAction;
+
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> _LeanLeftAction;
+
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> _LeanRightAction;
+
 	int _PlayerPoints;
 	bool _CanExit = false;
 	
@@ -55,6 +67,14 @@ protected:
 	void FirePressed();
 	void FireReleased();
 	void InteractPressed();
+	void CrouchPressed();
+	void CrouchReleased();
+	void SprintPressed();
+	void SprintReleased();
+	void LeanLeftPressed();
+	void LeanRightPressed();
+	void LeanLeftReleased();
+	void LeanRightReleased();
 
 	virtual void OnPossess(APawn* InPawn) override;
 

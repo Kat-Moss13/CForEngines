@@ -3,7 +3,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Weapon_Base.generated.h"
- 
+
+class UWeaponType;
 class UArrowComponent;
  
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FWeaponFireSignature);
@@ -15,7 +16,10 @@ class M012237NC_API AWeapon_Base : public AActor
  
 public:
 	AWeapon_Base();
- 
+
+	void Init(UWeaponType* type);
+
+	
 	UPROPERTY(BlueprintAssignable)
 	FWeaponFireSignature OnFire;
     
@@ -27,10 +31,15 @@ protected:
 	TObjectPtr<USceneComponent> _Root;
  
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
-	TObjectPtr<USkeletalMeshComponent> _Mesh;
+	TSoftObjectPtr<UStaticMeshComponent> _Mesh;
     
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<UArrowComponent> _Muzzle;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UWeaponType> _TypeData;
+	
+	
  
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float _FireDelay;

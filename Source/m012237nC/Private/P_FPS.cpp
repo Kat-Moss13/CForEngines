@@ -1,11 +1,17 @@
 ﻿
 #include "P_FPS.h"
+
+#include <cmath>
+
+#include "FrameTypes.h"
 #include "HealthComponent.h"
 #include "Interact.h"
 #include "Weapon_Base.h"
+#include "WeaponType.h"
 #include "Camera/CameraComponent.h"
 #include "Components/ArrowComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 
@@ -25,6 +31,8 @@ AP_FPS::AP_FPS()
 
 	_InteractArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Interact Arrow"));
 	_InteractArrow->SetupAttachment(_Camera);
+
+	SprintSpeedMultiplier = 2;
 }
 void AP_FPS::BeginPlay()
 {
@@ -39,6 +47,7 @@ void AP_FPS::BeginPlay()
 		spawnParams.Instigator = this;
 		_WeaponRef = GetWorld()->SpawnActor<AWeapon_Base>(_DefaultWeapon, _WeaponAttachPoint->GetComponentTransform(), spawnParams);
 		_WeaponRef->AttachToComponent(_WeaponAttachPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
+		_WeaponRef->Init(_DefaultWeaponType);
 	}
 }
 
@@ -108,6 +117,60 @@ void AP_FPS::Input_InteractPressed_Implementation(bool canExit)
 		}
 	}
 	
+}
+
+void AP_FPS::Input_CrouchPressed_Implementation()
+{
+	isCrouched = true;
+	Crouch();
+}
+
+void AP_FPS::Input_CrouchReleased_Implementation()
+{
+	isCrouched = false;
+	UnCrouch();
+}
+
+void AP_FPS::Input_SprintPressed_Implementation()
+{
+	if(!isCrouched)
+	{
+		GetCharacterMovement()->MaxWalkSpeed *= SprintSpeedMultiplier;
+	}
+	
+}
+
+void AP_FPS::Input_SprintReleased_Implementation()
+{
+	if(!isCrouched)
+	{
+		GetCharacterMovement()->MaxWalkSpeed /= SprintSpeedMultiplier;
+		
+	}
+}
+
+void AP_FPS::Input_LeanLeftPressed_Implementation()
+{
+	_Camera->AddRelativeRotation(FRotator(0.0f, 0.0f, -30.0f));
+	_Camera->SetRelativeLocation(FVector(0.0f, -30.0f, 70.0f));
+}
+
+void AP_FPS::Input_LeanLeftReleased_Implementation()
+{
+	_Camera->AddRelativeRotation(FRotator(0.0f, 0.0f, 30.0f));
+	_Camera->SetRelativeLocation(FVector(0.0f, 0.0f, 70.0f));
+}
+
+void AP_FPS::Input_LeanRightPressed_Implementation()
+{
+	_Camera->AddRelativeRotation(FRotator(0.0f, 0.0f, 30.0f));
+	_Camera->SetRelativeLocation(FVector(0.0f, 30.0f, 70.0f));
+}
+
+void AP_FPS::Input_LeanRightReleased_Implementation()
+{
+	_Camera->AddRelativeRotation(FRotator(0.0f, 0.0f, -30.0f));
+	_Camera->SetRelativeLocation(FVector(0.0f, 0.0f, 70.0f));
 }
 
 UInputMappingContext* AP_FPS::GetMappingContext_Implementation()

@@ -1,5 +1,6 @@
 ﻿#include "Weapon_Base.h"
 
+#include "WeaponType.h"
 #include "Components/ArrowComponent.h"
 
 AWeapon_Base::AWeapon_Base()
@@ -10,13 +11,22 @@ AWeapon_Base::AWeapon_Base()
 	_Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	RootComponent = _Root;
  
-	_Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
+	_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	_Mesh->SetupAttachment(RootComponent);
  
 	_Muzzle = CreateDefaultSubobject<UArrowComponent>(TEXT("Muzzle"));
-	_Muzzle->SetupAttachment(_Mesh);
+	_Muzzle->SetupAttachment(_Root);
+	
 }
- 
+
+void AWeapon_Base::Init(UWeaponType* type)
+{
+	_TypeData = type;
+	UE_LOG(LogTemp, Warning, TEXT("mesh %s"), *_TypeData->_WeaponMesh.GetName());
+	_Mesh->SetStaticMesh(_TypeData->_WeaponMesh);
+	
+}
+
 void AWeapon_Base::StartFire()
 {
 	Fire();

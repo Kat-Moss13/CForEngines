@@ -1,5 +1,6 @@
 ﻿#include "Weapon_Hitscan.h"
- 
+
+#include "WeaponType.h"
 #include "Components/ArrowComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -19,7 +20,7 @@ void AWeapon_Hitscan::Fire()
 	   ActorsToIgnore, EDrawDebugTrace::ForDuration, hit, true, FLinearColor::Red,
 	   FLinearColor::Green, 5))
 	{
-		UGameplayStatics::ApplyDamage(hit.GetActor(), _Damage,
+		UGameplayStatics::ApplyDamage(hit.GetActor(), _TypeData->_Damage,
 		   GetOwner()->GetInstigatorController(), GetOwner(),
 		   UDamageType::StaticClass());
  
