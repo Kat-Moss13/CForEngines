@@ -32,7 +32,19 @@ protected:
  
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	TSoftObjectPtr<UStaticMeshComponent> _Mesh;
-    
+	
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+	TSoftObjectPtr<UStaticMeshComponent> _Hammer;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+	TSoftObjectPtr<UStaticMeshComponent> _Slide;
+	
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+	TSoftObjectPtr<UStaticMeshComponent> _Mag;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+	TSoftObjectPtr<UStaticMeshComponent> _Silencer;
+	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<UArrowComponent> _Muzzle;
 
@@ -47,4 +59,6 @@ protected:
  
 	UFUNCTION()
 	virtual void Fire();
+
+	
 };

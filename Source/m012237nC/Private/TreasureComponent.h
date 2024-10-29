@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "Interact.h"
 #include "Components/ActorComponent.h"
 #include "TreasureComponent.generated.h"
 
