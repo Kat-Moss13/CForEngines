@@ -22,9 +22,11 @@ public:
 	
 	UPROPERTY(BlueprintAssignable)
 	FWeaponFireSignature OnFire;
+	
     
-	void StartFire();
+	void StartFire(AController* causer);
 	void StopFire();
+    void Reload(AController* causer);
     
 protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
@@ -51,7 +53,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UWeaponType> _TypeData;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int _MaxAmmo;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	int _CurrentAmmo;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int _AmmoClip;
  
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float _FireDelay;
@@ -59,6 +68,7 @@ protected:
  
 	UFUNCTION()
 	virtual void Fire();
+
 
 	
 };

@@ -30,7 +30,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool SilencerOn;
 	
-	UPROPERTY(editAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float _Damage;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int _MaxAmmo;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int _AmmoClip;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float _FireDelay;
 };

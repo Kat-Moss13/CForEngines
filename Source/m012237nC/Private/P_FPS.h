@@ -2,6 +2,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ChangeWeapon.h"
 #include "GameFramework/Character.h"
 #include "Inputable.h"
 #include "P_FPS.generated.h"
@@ -15,7 +16,7 @@ class UArrowComponent;
 class AWeapon_Base;
 
 UCLASS(Abstract)
-class M012237NC_API AP_FPS : public ACharacter, public IInputable
+class M012237NC_API AP_FPS : public ACharacter, public IInputable, public IChangeWeapon
 {
 	GENERATED_BODY()
 
@@ -43,7 +44,10 @@ public:
 	virtual void Input_LeanLeftReleased_Implementation() override;
 	virtual void Input_LeanRightPressed_Implementation() override;
 	virtual void Input_LeanRightReleased_Implementation() override;
+	virtual void Input_ReloadPressed_Implementation() override;
 
+	virtual void UpdateWeapon_Implementation(UWeaponType* Weapon) override;
+	
 	virtual UInputMappingContext* GetMappingContext_Implementation() override;
 	
 	virtual void BeginPlay() override;
@@ -81,10 +85,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UArrowComponent> _InteractArrow;
 
+	
 private:
 	UFUNCTION()
 	void Handle_HealthDead(AController* causer);
 	UFUNCTION()
 	void Handle_HealthDamaged(float current, float max, float change);
+
 	
 };

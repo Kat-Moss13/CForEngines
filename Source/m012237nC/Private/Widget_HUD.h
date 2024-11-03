@@ -15,10 +15,15 @@ public:
 	virtual void NativeConstruct() override;
 	void UpdateHeatlh(float newHealthRatio);
 	void UpdateScore(int newScore);
+	void UpdateAmmo(int newCurrent, int newMax);
 	
 private:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UProgressBar> HealthBar;
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> ScoreText;
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UTextBlock> CurrentAmmoText;
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UTextBlock> MaxAmmoText;
 };

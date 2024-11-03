@@ -3,6 +3,7 @@
 
 #include "GameRule.h"
 #include "Scorable.h"
+#include "WeaponHolder.h"
 #include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
  
@@ -62,7 +63,14 @@ void AGM_FPS::HandleMatchHasStarted()
 	for(AController* controller : _PlayerControllers)
 	{
 		RestartPlayer(controller);
+		
 	}
+	
+	if(UKismetSystemLibrary::DoesImplementInterface(_PlayerControllers[0], UWeaponHolder::StaticClass()))
+	{
+		IWeaponHolder::Execute_ChooseWeapon(_PlayerControllers[0]);
+	}
+	
 	Super::HandleMatchHasStarted();
 }
  

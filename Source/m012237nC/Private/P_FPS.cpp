@@ -47,9 +47,23 @@ void AP_FPS::BeginPlay()
 		spawnParams.Instigator = this;
 		_WeaponRef = GetWorld()->SpawnActor<AWeapon_Base>(_DefaultWeapon, _WeaponAttachPoint->GetComponentTransform(), spawnParams);
 		_WeaponRef->AttachToComponent(_WeaponAttachPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
-		_WeaponRef->Init(_DefaultWeaponType);
+		//_WeaponRef->Init(_DefaultWeaponType);
 	}
 }
+
+void AP_FPS::Input_ReloadPressed_Implementation()
+{
+	if(_WeaponRef)
+	{
+		_WeaponRef->Reload(this->Controller);
+	}
+}
+
+void AP_FPS::UpdateWeapon_Implementation(UWeaponType* Weapon)
+{
+	_WeaponRef->Init(Weapon);
+}
+
 
 UBehaviorTree* AP_FPS::GetBehaviorTree_Implementation()
 {
@@ -60,7 +74,7 @@ void AP_FPS::Input_FirePressed_Implementation()
 {
 	if(_WeaponRef)
 	{
-		_WeaponRef->StartFire();
+		_WeaponRef->StartFire(this->Controller);
 	}
 }
 
@@ -173,6 +187,7 @@ void AP_FPS::Input_LeanRightReleased_Implementation()
 	_Camera->SetRelativeLocation(FVector(0.0f, 0.0f, 70.0f));
 }
 
+
 UInputMappingContext* AP_FPS::GetMappingContext_Implementation()
 {
 	return _InputMapping;
@@ -189,5 +204,6 @@ void AP_FPS::Handle_HealthDamaged(float current, float max, float change)
 {
 	
 }
+
 
 

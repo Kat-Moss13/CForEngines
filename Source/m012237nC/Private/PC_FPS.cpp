@@ -1,22 +1,57 @@
 ﻿
 #include "PC_FPS.h"
 
+#include "ChangeWeapon.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "GunSelectionMenu.h"
 #include "Inputable.h"
 #include "Widget_HUD.h"
 #include "Blueprint/UserWidget.h"
-#include "DynamicMesh/DynamicMesh3.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 void APC_FPS::BeginPlay()
 {
 	Super::BeginPlay();
-
 	if(_HUDWidgetClass)
 	{
 		_HUDWidget = CreateWidget<UWidget_HUD, APC_FPS*>(this, _HUDWidgetClass.Get());
-		_HUDWidget->AddToViewport();
+	}
+	bEnableClickEvents = true;
+	PrimaryActorTick.bCanEverTick = true;
+}
+
+void APC_FPS::ChooseWeapon_Implementation()
+{
+	SetPause(true);
+	SetShowMouseCursor(true);
+	if(_GunWidgetClass)
+	{
+		_GunWidget = CreateWidget<UGunSelectionMenu, APC_FPS*>(this, _GunWidgetClass.Get());
+		_GunWidget->AddToViewport();
+		_GunWidget->OnStart.AddUniqueDynamic(this, &APC_FPS::GameStart);
+		_GunWidget->OnChangedWeapon.AddUniqueDynamic(this, &APC_FPS::ChangeWeapon);
+	}
+}
+
+void APC_FPS::GameStart()
+{
+	SetPause(false);
+	SetShowMouseCursor(false);	
+	_GunWidget->RemoveFromParent();
+	_HUDWidget->AddToViewport();
+	ReloadPressed();
+}
+
+void APC_FPS::ChangeWeapon(UWeaponType* Weapon)
+{
+	if(APawn* currentPawn = GetPawn())
+	{
+		if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UChangeWeapon::StaticClass()))
+		{
+			IChangeWeapon::Execute_UpdateWeapon(currentPawn, Weapon);
+		}
+
 	}
 }
 
@@ -40,8 +75,9 @@ void APC_FPS::SetupInputComponent()
 		EIP->BindAction(_LeanLeftAction, ETriggerEvent::Completed, this, &APC_FPS::LeanLeftReleased);
 		EIP->BindAction(_LeanRightAction, ETriggerEvent::Started, this, &APC_FPS::LeanRightPressed);
 		EIP->BindAction(_LeanRightAction, ETriggerEvent::Completed, this, &APC_FPS::LeanRightReleased);
-		
+		EIP->BindAction(_Reload, ETriggerEvent::Started, this, &APC_FPS::ReloadPressed);
 	}
+
 	
 }
 
@@ -54,6 +90,11 @@ void APC_FPS::AddScore_Implementation(int points)
 void APC_FPS::ExitTrue_Implementation()
 {
 	_CanExit = true;
+}
+
+void APC_FPS::UpdateAmmoUI_Implementation(int CurrentAmmo, int MaxAmmo)
+{
+	_HUDWidget->UpdateAmmo(CurrentAmmo, MaxAmmo);
 }
 
 void APC_FPS::Look(const FInputActionValue& value)
@@ -224,6 +265,19 @@ void APC_FPS::LeanRightReleased()
 	}
 }
 
+void APC_FPS::ReloadPressed()
+{
+	if(APawn* currentPawn = GetPawn())
+	{
+		if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
+		{
+			IInputable::Execute_Input_ReloadPressed(currentPawn);
+		}
+	}
+}
+
+
+
 void APC_FPS::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
@@ -233,9 +287,12 @@ void APC_FPS::OnPossess(APawn* InPawn)
 		if(UKismetSystemLibrary::DoesImplementInterface(InPawn, UInputable::StaticClass()))
 		{
 			subsystem->AddMappingContext(IInputable::Execute_GetMappingContext(InPawn), 0);
+			ReloadPressed();
 		}
 	}
 }
+
+
 
 
 

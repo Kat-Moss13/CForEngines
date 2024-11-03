@@ -64,6 +64,12 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Input_LeanRightReleased();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Input_ReloadPressed();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Input_ReloadUIUpdate();
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UInputMappingContext* GetMappingContext();

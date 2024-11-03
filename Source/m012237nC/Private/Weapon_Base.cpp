@@ -1,8 +1,10 @@
 ﻿#include "Weapon_Base.h"
 
+#include "WeaponHolder.h"
 #include "WeaponType.h"
 #include "Components/ArrowComponent.h"
 #include "Engine/StaticMeshSocket.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 AWeapon_Base::AWeapon_Base()
 {
@@ -50,17 +52,30 @@ void AWeapon_Base::Init(UWeaponType* type)
 		UE_LOG(LogTemp, Warning, TEXT("Socket Array Empty"));
 	}
 	_Muzzle->SetRelativeLocation(Sockets[0]->RelativeLocation);
+	_FireDelay = _TypeData->_FireDelay;
+	_MaxAmmo = _TypeData->_MaxAmmo;
+	_AmmoClip = _TypeData->_AmmoClip;
+	_CurrentAmmo = 0;
 }
 
 
 
-void AWeapon_Base::StartFire()
+void AWeapon_Base::StartFire(AController* causer)
 {
-	Fire();
-	if(_FireDelay != 0.f)
+	if(_CurrentAmmo > 0)
 	{
-		GetWorld()->GetTimerManager().SetTimer(_FireDelayTimer, this, &AWeapon_Base::Fire, _FireDelay, true);
+		_CurrentAmmo--;
+		if(UKismetSystemLibrary::DoesImplementInterface(causer, UWeaponHolder::StaticClass()))
+		{
+			IWeaponHolder::Execute_UpdateAmmoUI(causer, _CurrentAmmo, _MaxAmmo);
+		}
+		Fire();
+		if(_FireDelay != 0.f)
+		{
+			GetWorld()->GetTimerManager().SetTimer(_FireDelayTimer, this, &AWeapon_Base::Fire, _FireDelay, true);
+		}
 	}
+	
 }
  
 void AWeapon_Base::StopFire()
@@ -71,5 +86,35 @@ void AWeapon_Base::StopFire()
 void AWeapon_Base::Fire()
 {
 	OnFire.Broadcast();
+	
+}
+
+void AWeapon_Base::Reload(AController* causer)
+{
+	if(_MaxAmmo > 0)
+	{
+		int NeededAmmo = _AmmoClip - _CurrentAmmo;
+		if(NeededAmmo > 0)
+		{
+			if(NeededAmmo >= _MaxAmmo)
+			{
+				_CurrentAmmo += _MaxAmmo;
+				_MaxAmmo = 0;
+			}
+			else
+			{
+				_CurrentAmmo += NeededAmmo;
+				_MaxAmmo -= NeededAmmo;
+			}
+		}
+	}
+
+	
+	
+	
+	if(UKismetSystemLibrary::DoesImplementInterface(causer, UWeaponHolder::StaticClass()))
+	{
+		IWeaponHolder::Execute_UpdateAmmoUI(causer, _CurrentAmmo, _MaxAmmo);
+	}
 }
 
