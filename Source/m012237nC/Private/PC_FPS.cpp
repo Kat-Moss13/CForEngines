@@ -10,6 +10,12 @@
 #include "Blueprint/UserWidget.h"
 #include "Kismet/KismetSystemLibrary.h"
 
+FGenericTeamId APC_FPS::GetGenericTeamId() const
+{
+	FGenericTeamId _teamID = FGenericTeamId(2);
+	return _teamID;
+}
+
 void APC_FPS::BeginPlay()
 {
 	Super::BeginPlay();
@@ -51,7 +57,6 @@ void APC_FPS::ChangeWeapon(UWeaponType* Weapon)
 		{
 			IChangeWeapon::Execute_UpdateWeapon(currentPawn, Weapon);
 		}
-
 	}
 }
 

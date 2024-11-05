@@ -8,6 +8,7 @@
 #include "Interact.h"
 #include "Weapon_Base.h"
 #include "WeaponType.h"
+#include "BehaviorTree/BehaviorTree.h"
 #include "Camera/CameraComponent.h"
 #include "Components/ArrowComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -58,6 +59,7 @@ void AP_FPS::Input_ReloadPressed_Implementation()
 		_WeaponRef->Reload(this->Controller);
 	}
 }
+
 
 void AP_FPS::UpdateWeapon_Implementation(UWeaponType* Weapon)
 {
@@ -204,6 +206,7 @@ void AP_FPS::Handle_HealthDamaged(float current, float max, float change)
 {
 	
 }
+
 
 
 

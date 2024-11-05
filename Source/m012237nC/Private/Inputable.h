@@ -70,6 +70,9 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Input_ReloadUIUpdate();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void AI_SightUpdate(AActor* SeenActor);
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UInputMappingContext* GetMappingContext();

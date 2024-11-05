@@ -2,6 +2,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GenericTeamAgentInterface.h"
 #include "InputActionValue.h"
 #include "Scorable.h"
 #include "WeaponHolder.h"
@@ -16,10 +17,14 @@ class UWidget_HUD;
 
 
 UCLASS()
-class M012237NC_API APC_FPS : public APlayerController , public IScorable, public IWeaponHolder
+class M012237NC_API APC_FPS : public APlayerController , public IScorable, public IWeaponHolder, public IGenericTeamAgentInterface
 {
 
 	GENERATED_BODY()
+
+public:
+	virtual FGenericTeamId GetGenericTeamId() const override;
+	
 
 protected:
 	UPROPERTY(EditAnywhere, Category="Input")
@@ -54,6 +59,7 @@ protected:
 
 	int _PlayerPoints;
 	bool _CanExit = false;
+
 	
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UWidget_HUD> _HUDWidgetClass;
