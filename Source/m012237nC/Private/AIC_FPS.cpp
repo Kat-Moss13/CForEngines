@@ -35,12 +35,10 @@ void AAIC_FPS::BeginPlay()
 void AAIC_FPS::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
-
 	if(UKismetSystemLibrary::DoesImplementInterface(InPawn, UInputable::StaticClass()))
 	{
-	
+
 		RunBehaviorTree(IInputable::Execute_GetBehaviorTree(InPawn));
-		_Blackboard = GetBlackboardComponent();
 	}
 }
 
@@ -63,11 +61,9 @@ void AAIC_FPS::Handle_TargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulu
 	switch (Stimulus.Type)
 	{
 	case 0:
-		_Blackboard->SetValueAsVector("TargetLocation", Actor->GetActorLocation());
-		//_Blackboard->SetValueAsObject("TargetActor", Actor);
+		GetBlackboardComponent()->SetValueAsVector(FName("TargetPosition"), Actor->GetActorLocation());
+		//GetBlackboardComponent()->SetValueAsObject(FName("TargetActor"), Actor);
 		
-		UE_LOG(LogTemp, Display, TEXT("Sensed Actor (Sight): %s"), *Actor->GetName());
-		return;
 	
 	default:
 		return;

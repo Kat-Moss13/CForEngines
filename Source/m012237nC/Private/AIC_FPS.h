@@ -20,8 +20,7 @@ public:
 	
 
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TObjectPtr<UBlackboardComponent> _Blackboard;
+	
 	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAIPerceptionComponent> _AIPerception;
