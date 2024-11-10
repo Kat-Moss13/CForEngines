@@ -5,7 +5,7 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/GameplayStatics.h"
-
+#include "WeaponType.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
@@ -30,13 +30,7 @@ AAIC_FPS::AAIC_FPS()
 void AAIC_FPS::BeginPlay()
 {
 	Super::BeginPlay();
-	if(APawn* currentPawn = GetPawn())
-	{
-		if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UChangeWeapon::StaticClass()))
-		{
-			//IChangeWeapon::Execute_UpdateAIWeapon(currentPawn);
-		}
-	}
+	
 	_AIPerception->OnTargetPerceptionUpdated.AddUniqueDynamic(this, &AAIC_FPS::Handle_TargetPerceptionUpdated);
 
 }
@@ -48,6 +42,13 @@ void AAIC_FPS::OnPossess(APawn* InPawn)
 	{
 
 		RunBehaviorTree(IInputable::Execute_GetBehaviorTree(InPawn));
+	}
+	if(APawn* currentPawn = GetPawn())
+	{
+		if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UChangeWeapon::StaticClass()))
+		{
+			//IChangeWeapon::Execute_UpdateWeapon(currentPawn, _TypeData);
+		}
 	}
 }
 
@@ -72,14 +73,20 @@ void AAIC_FPS::Handle_TargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulu
 	case 0:
 		if(Actor == UGameplayStatics::GetPlayerPawn(GetWorld(), 0))
 		{
-			GetBlackboardComponent()->SetValueAsBool("CanSeePlayer", Stimulus.WasSuccessfullySensed());
-			GetBlackboardComponent()->SetValueAsVector(FName("TargetPosition"), Actor->GetActorLocation());
-			GetBlackboardComponent()->SetValueAsObject(FName("TargetActor"), Actor);
+			if(Stimulus.WasSuccessfullySensed())
+			{
+				GetBlackboardComponent()->SetValueAsVector(FName("TargetPosition"), Actor->GetActorLocation());
+				GetBlackboardComponent()->SetValueAsObject(FName("TargetActor"), Actor);
+			}
+			else
+			{
+				GetBlackboardComponent()->SetValueAsObject(FName("TargetActor"), nullptr);
+				GetBlackboardComponent()->SetValueAsVector(FName("LastKnownLocation"), Actor->GetActorLocation());
+			}
+			
 		}
-		
-		
-		
-		
+
+	
 	
 	default:
 		return;

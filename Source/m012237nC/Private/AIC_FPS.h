@@ -4,6 +4,7 @@
 #include "Runtime/AIModule/Classes/AIController.h"
 #include "AIC_FPS.generated.h"
 
+class UWeaponType;
 struct FAIStimulus;
 class UAISenseConfig_Sight;
 
@@ -25,6 +26,8 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAIPerceptionComponent> _AIPerception;
 	TObjectPtr<UAISenseConfig_Sight> _AISense_Sight;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UWeaponType> _TypeData;
 	
 	virtual void BeginPlay() override;
 	virtual void OnPossess(APawn* InPawn) override;

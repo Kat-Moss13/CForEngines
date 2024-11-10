@@ -19,7 +19,6 @@ public:
 
 	void Init(UWeaponType* type);
 
-	
 	UPROPERTY(BlueprintAssignable)
 	FWeaponFireSignature OnFire;
 	

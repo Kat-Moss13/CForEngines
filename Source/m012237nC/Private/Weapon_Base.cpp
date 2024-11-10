@@ -56,8 +56,8 @@ void AWeapon_Base::Init(UWeaponType* type)
 	_MaxAmmo = _TypeData->_MaxAmmo;
 	_AmmoClip = _TypeData->_AmmoClip;
 	_CurrentAmmo = 0;
+	
 }
-
 
 
 void AWeapon_Base::StartFire(AController* causer)
