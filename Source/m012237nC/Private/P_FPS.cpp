@@ -48,7 +48,7 @@ void AP_FPS::BeginPlay()
 		spawnParams.Instigator = this;
 		_WeaponRef = GetWorld()->SpawnActor<AWeapon_Base>(_DefaultWeapon, _WeaponAttachPoint->GetComponentTransform(), spawnParams);
 		_WeaponRef->AttachToComponent(_WeaponAttachPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
-		//_WeaponRef->Init(_DefaultWeaponType);
+		
 	}
 }
 
@@ -60,10 +60,21 @@ void AP_FPS::Input_ReloadPressed_Implementation()
 	}
 }
 
+FVector AP_FPS::PawnPosition_Implementation()
+{
+	return this->GetActorLocation();
+}
+
+
 
 void AP_FPS::UpdateWeapon_Implementation(UWeaponType* Weapon)
 {
 	_WeaponRef->Init(Weapon);
+}
+
+void AP_FPS::UpdateAIWeapon_Implementation()
+{
+	_WeaponRef->Init(_DefaultWeaponType);
 }
 
 

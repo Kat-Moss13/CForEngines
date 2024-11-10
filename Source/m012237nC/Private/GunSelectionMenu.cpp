@@ -22,6 +22,11 @@ void UGunSelectionMenu::UpdateGunSelection(UWeaponType* weaponChosen)
 
 void UGunSelectionMenu::StartGame()
 {
+	if(WeaponSelected == false)
+	{
+		SetBaretta();
+		UpdateGunSelection(_WeaponChosen);
+	}
 	UpdateGunSelection(_WeaponChosen);
 	OnStart.Broadcast();
 }
@@ -33,6 +38,7 @@ void UGunSelectionMenu::SetBaretta()
 			if(_Weapons[i]->GetName().Contains( "Baretta"))
 			{
 				_WeaponChosen = _Weapons[i];
+				WeaponSelected = true;
 			}
 		}
 }
@@ -45,6 +51,7 @@ void UGunSelectionMenu::SetGlock()
 		{
 			
 			_WeaponChosen = _Weapons[i];
+			WeaponSelected = true;
 		}
 	}
 }
@@ -57,6 +64,7 @@ void UGunSelectionMenu::SetM16()
 		{
 			
 			_WeaponChosen = _Weapons[i];
+			WeaponSelected = true;
 		}
 	}
 }

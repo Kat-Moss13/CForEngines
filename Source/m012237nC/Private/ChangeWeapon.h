@@ -25,4 +25,7 @@ class M012237NC_API IChangeWeapon
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void UpdateWeapon(UWeaponType* Weapon);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void UpdateAIWeapon();
 };

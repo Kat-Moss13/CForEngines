@@ -20,7 +20,7 @@ public:
 	virtual void NativeConstruct() override;
 
 	
-	
+	bool WeaponSelected = false;
 
 	UPROPERTY(BlueprintAssignable)
 	FWeaponChangeSignature OnChangedWeapon;

@@ -45,8 +45,11 @@ public:
 	virtual void Input_LeanRightPressed_Implementation() override;
 	virtual void Input_LeanRightReleased_Implementation() override;
 	virtual void Input_ReloadPressed_Implementation() override;
+	virtual FVector PawnPosition_Implementation() override;
 
 	virtual void UpdateWeapon_Implementation(UWeaponType* Weapon) override;
+	virtual void UpdateAIWeapon_Implementation() override;
+	
 	
 	virtual UInputMappingContext* GetMappingContext_Implementation() override;
 	
