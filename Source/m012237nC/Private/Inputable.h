@@ -5,6 +5,7 @@
 #include "UObject/Interface.h"
 #include "Inputable.generated.h"
 
+class AAIPatrolPath;
 class UBehaviorTree;
 
 UINTERFACE()
@@ -82,5 +83,11 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UBehaviorTree* GetBehaviorTree();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	AAIPatrolPath* GetPatrolPath();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void SetMaxWalkSpeed(float speed);
 	
 };

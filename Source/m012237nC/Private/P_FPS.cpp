@@ -8,6 +8,7 @@
 #include "Interact.h"
 #include "Weapon_Base.h"
 #include "WeaponType.h"
+#include "AIPatrolPath.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "Camera/CameraComponent.h"
 #include "Components/ArrowComponent.h"
@@ -81,6 +82,40 @@ void AP_FPS::UpdateAIWeapon_Implementation()
 UBehaviorTree* AP_FPS::GetBehaviorTree_Implementation()
 {
 	return _BehaviorTree;
+}
+
+AAIPatrolPath* AP_FPS::GetPatrolPath_Implementation()
+{
+	return PatrolPath;
+}
+
+void AP_FPS::SetMaxWalkSpeed_Implementation(float speed)
+{
+	this->GetCharacterMovement()->MaxWalkSpeed = speed;
+}
+
+int AP_FPS::MeleeAttack_Implementation()
+{
+	if(AnimMontage)
+	{
+		PlayAnimMontage(AnimMontage);
+	}
+	return 0;
+}
+
+UAnimMontage* AP_FPS::GetMontage() const
+{
+	return AnimMontage;
+}
+
+APawn* AP_FPS::GetAIPawn_Implementation()
+{
+	return this;
+}
+
+AP_FPS* AP_FPS::GetSpecificPawn_Implementation()
+{
+	return this;
 }
 
 void AP_FPS::Input_FirePressed_Implementation()

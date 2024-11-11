@@ -3,6 +3,7 @@
 
 #include "CoreMinimal.h"
 #include "ChangeWeapon.h"
+#include "Combat.h"
 #include "GameFramework/Character.h"
 #include "Inputable.h"
 #include "P_FPS.generated.h"
@@ -14,9 +15,10 @@ class UCameraComponent;
 class UCapsuleComponent;
 class UArrowComponent;
 class AWeapon_Base;
+class AAIPatrolPath;
 
 UCLASS(Abstract)
-class M012237NC_API AP_FPS : public ACharacter, public IInputable, public IChangeWeapon
+class M012237NC_API AP_FPS : public ACharacter, public IInputable, public IChangeWeapon, public ICombat
 {
 	GENERATED_BODY()
 
@@ -56,6 +58,15 @@ public:
 	virtual void BeginPlay() override;
 
 	virtual UBehaviorTree* GetBehaviorTree_Implementation() override;
+
+	virtual AAIPatrolPath* GetPatrolPath_Implementation() override;
+	virtual void SetMaxWalkSpeed_Implementation(float speed) override;
+
+	virtual int MeleeAttack_Implementation() override;
+
+	UAnimMontage* GetMontage() const;
+	virtual APawn* GetAIPawn_Implementation() override;
+	virtual AP_FPS* GetSpecificPawn_Implementation() override;
 	
 protected:
 
@@ -90,10 +101,17 @@ protected:
 
 	
 private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI", meta = (AllowPrivateAccess = "true"))
+	AAIPatrolPath* PatrolPath;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Animation", meta = (AllowPrivateAccess = "true"))
+	UAnimMontage* AnimMontage;
+	
 	UFUNCTION()
 	void Handle_HealthDead(AController* causer);
 	UFUNCTION()
 	void Handle_HealthDamaged(float current, float max, float change);
 
+	
 	
 };
