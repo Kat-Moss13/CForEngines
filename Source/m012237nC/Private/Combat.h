@@ -4,6 +4,7 @@
 #include "UObject/Interface.h"
 #include "Combat.generated.h"
 
+class UWeaponType;
 class AP_FPS;
 
 UINTERFACE()
@@ -18,7 +19,10 @@ class M012237NC_API ICombat
 	GENERATED_BODY()
 
 public:
-
+	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void CallGetWeapon();
+	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	APawn* GetAIPawn();
 

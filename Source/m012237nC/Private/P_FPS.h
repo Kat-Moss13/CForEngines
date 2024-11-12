@@ -54,7 +54,9 @@ public:
 	
 	
 	virtual UInputMappingContext* GetMappingContext_Implementation() override;
-	
+
+	virtual void PossessedBy(AController* NewController) override;
+
 	virtual void BeginPlay() override;
 
 	virtual UBehaviorTree* GetBehaviorTree_Implementation() override;
@@ -63,6 +65,8 @@ public:
 	virtual void SetMaxWalkSpeed_Implementation(float speed) override;
 
 	virtual int MeleeAttack_Implementation() override;
+
+	virtual void CallGetWeapon_Implementation() override;
 
 	UAnimMontage* GetMontage() const;
 	virtual APawn* GetAIPawn_Implementation() override;

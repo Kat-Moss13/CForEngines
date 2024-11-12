@@ -36,26 +36,31 @@ AWeapon_Base::AWeapon_Base()
 
 void AWeapon_Base::Init(UWeaponType* type)
 {
-	_TypeData = type;
-	_Mesh->SetStaticMesh(_TypeData->_WeaponMesh);
-	_Hammer->SetStaticMesh(_TypeData->_Hammer);
-	_Slide->SetStaticMesh(_TypeData->_Slide);
-	_Mag->SetStaticMesh(_TypeData->_Mag);
-	TArray<UStaticMeshSocket*> Sockets = _TypeData->_WeaponMesh->GetSocketsByTag(TEXT("Muzzle"));
+	if(type)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("got to init"));
+		_TypeData = type;
+		_Mesh->SetStaticMesh(_TypeData->_WeaponMesh);
+		_Hammer->SetStaticMesh(_TypeData->_Hammer);
+		_Slide->SetStaticMesh(_TypeData->_Slide);
+		_Mag->SetStaticMesh(_TypeData->_Mag);
+		TArray<UStaticMeshSocket*> Sockets = _TypeData->_WeaponMesh->GetSocketsByTag(TEXT("Muzzle"));
 
-	if(_TypeData->SilencerOn == true)
-	{
-		_Silencer->SetStaticMesh(_TypeData->_Silencer);
+		if(_TypeData->SilencerOn == true)
+		{
+			_Silencer->SetStaticMesh(_TypeData->_Silencer);
+		}
+		if(Sockets.IsEmpty())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Socket Array Empty"));
+		}
+		_Muzzle->SetRelativeLocation(Sockets[0]->RelativeLocation);
+		_FireDelay = _TypeData->_FireDelay;
+		_MaxAmmo = _TypeData->_MaxAmmo;
+		_AmmoClip = _TypeData->_AmmoClip;
+		_CurrentAmmo = 0;
 	}
-	if(Sockets.IsEmpty())
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Socket Array Empty"));
-	}
-	_Muzzle->SetRelativeLocation(Sockets[0]->RelativeLocation);
-	_FireDelay = _TypeData->_FireDelay;
-	_MaxAmmo = _TypeData->_MaxAmmo;
-	_AmmoClip = _TypeData->_AmmoClip;
-	_CurrentAmmo = 0;
+	
 	
 }
 

@@ -36,12 +36,18 @@ AP_FPS::AP_FPS()
 
 	SprintSpeedMultiplier = 2;
 }
+
 void AP_FPS::BeginPlay()
 {
 	Super::BeginPlay();
 	_Health->OnDead.AddUniqueDynamic(this, &AP_FPS::Handle_HealthDead);
 	_Health->OnDamaged.AddUniqueDynamic(this, &AP_FPS::Handle_HealthDamaged);
+	
+}
 
+void AP_FPS::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
 	if(_DefaultWeapon)
 	{
 		FActorSpawnParameters spawnParams;
@@ -49,9 +55,9 @@ void AP_FPS::BeginPlay()
 		spawnParams.Instigator = this;
 		_WeaponRef = GetWorld()->SpawnActor<AWeapon_Base>(_DefaultWeapon, _WeaponAttachPoint->GetComponentTransform(), spawnParams);
 		_WeaponRef->AttachToComponent(_WeaponAttachPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
-		
 	}
 }
+
 
 void AP_FPS::Input_ReloadPressed_Implementation()
 {
@@ -76,6 +82,7 @@ void AP_FPS::UpdateWeapon_Implementation(UWeaponType* Weapon)
 void AP_FPS::UpdateAIWeapon_Implementation()
 {
 	_WeaponRef->Init(_DefaultWeaponType);
+	UE_LOG(LogTemp, Warning, TEXT("calling update weapon in pawn"));
 }
 
 
@@ -103,6 +110,11 @@ int AP_FPS::MeleeAttack_Implementation()
 	return 0;
 }
 
+void AP_FPS::CallGetWeapon_Implementation()
+{
+	UpdateAIWeapon_Implementation();
+}
+
 UAnimMontage* AP_FPS::GetMontage() const
 {
 	return AnimMontage;
@@ -122,6 +134,7 @@ void AP_FPS::Input_FirePressed_Implementation()
 {
 	if(_WeaponRef)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("got to fire"));
 		_WeaponRef->StartFire(this->Controller);
 	}
 }
@@ -240,6 +253,7 @@ UInputMappingContext* AP_FPS::GetMappingContext_Implementation()
 {
 	return _InputMapping;
 }
+
 
 
 

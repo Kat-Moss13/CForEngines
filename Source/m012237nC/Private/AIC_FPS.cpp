@@ -44,12 +44,11 @@ void AAIC_FPS::OnPossess(APawn* InPawn)
 
 		RunBehaviorTree(IInputable::Execute_GetBehaviorTree(InPawn));
 	}
-	if(APawn* currentPawn = GetPawn())
+	
+	if(UKismetSystemLibrary::DoesImplementInterface(InPawn, UChangeWeapon::StaticClass()))
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UChangeWeapon::StaticClass()))
-		{
-			//IChangeWeapon::Execute_UpdateWeapon(currentPawn, _TypeData);
-		}
+		IChangeWeapon::Execute_UpdateWeapon(InPawn, _WeaponType);
+		UE_LOG(LogTemp, Warning, TEXT("calling update weapon"));
 	}
 }
 

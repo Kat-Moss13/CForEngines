@@ -1,13 +1,16 @@
 ﻿
 #include "PC_FPS.h"
 
+#include "AIHelpers.h"
 #include "ChangeWeapon.h"
+#include "Combat.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "GunSelectionMenu.h"
 #include "Inputable.h"
 #include "Widget_HUD.h"
 #include "Blueprint/UserWidget.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 FGenericTeamId APC_FPS::GetGenericTeamId() const
@@ -47,6 +50,7 @@ void APC_FPS::GameStart()
 	_GunWidget->RemoveFromParent();
 	_HUDWidget->AddToViewport();
 	ReloadPressed();
+	
 }
 
 void APC_FPS::ChangeWeapon(UWeaponType* Weapon)

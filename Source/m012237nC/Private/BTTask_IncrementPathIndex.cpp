@@ -1,5 +1,6 @@
-﻿#include "BehaviorTree/BlackboardComponent.h"
-#include "BTTask_IncrementPathIndex.h"
+﻿#include "BTTask_IncrementPathIndex.h"
+#include "BehaviorTree/BlackboardComponent.h"
+
 
 #include "AIPatrolPath.h"
 #include "Inputable.h"
