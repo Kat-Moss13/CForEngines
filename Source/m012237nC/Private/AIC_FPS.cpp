@@ -83,11 +83,9 @@ void AAIC_FPS::Handle_TargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulu
 				GetBlackboardComponent()->SetValueAsObject(FName("TargetActor"), nullptr);
 				GetBlackboardComponent()->SetValueAsVector(FName("LastKnownLocation"), Actor->GetActorLocation());
 			}
-			
-	
-			default:
-				return;
 		}
+	default:
+		return;
 	}
 }
 
