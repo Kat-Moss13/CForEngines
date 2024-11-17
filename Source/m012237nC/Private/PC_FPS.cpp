@@ -4,6 +4,7 @@
 #include "AIHelpers.h"
 #include "ChangeWeapon.h"
 #include "Combat.h"
+#include "P_FPS.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "GunSelectionMenu.h"
@@ -12,6 +13,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
+
 
 FGenericTeamId APC_FPS::GetGenericTeamId() const
 {
@@ -25,9 +27,11 @@ void APC_FPS::BeginPlay()
 	if(_HUDWidgetClass)
 	{
 		_HUDWidget = CreateWidget<UWidget_HUD, APC_FPS*>(this, _HUDWidgetClass.Get());
+		
 	}
 	bEnableClickEvents = true;
 	PrimaryActorTick.bCanEverTick = true;
+	
 }
 
 void APC_FPS::ChooseWeapon_Implementation()
@@ -49,6 +53,7 @@ void APC_FPS::GameStart()
 	SetShowMouseCursor(false);	
 	_GunWidget->RemoveFromParent();
 	_HUDWidget->AddToViewport();
+	_HUDWidget->UpdateHeatlh(1);
 	ReloadPressed();
 	
 }
@@ -296,9 +301,18 @@ void APC_FPS::OnPossess(APawn* InPawn)
 		if(UKismetSystemLibrary::DoesImplementInterface(InPawn, UInputable::StaticClass()))
 		{
 			subsystem->AddMappingContext(IInputable::Execute_GetMappingContext(InPawn), 0);
+			_PlayerPawn = IInputable::Execute_GetPawn(InPawn);
+			_PlayerPawn->OnPawnDamaged.AddUniqueDynamic(this, &APC_FPS::UpdateHealth);
 			ReloadPressed();
 		}
 	}
+	
+
+}
+
+void APC_FPS::UpdateHealth(float newHealth, float maxHealth, float change)
+{
+	_HUDWidget->UpdateHeatlh(newHealth/100.f);
 }
 
 

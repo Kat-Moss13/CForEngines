@@ -25,7 +25,7 @@ void AWeapon_Hitscan::Fire()
 		   UDamageType::StaticClass());
  
        
-		UE_LOG(LogTemp, Display, TEXT("Hit position: %s"), *hit.ImpactPoint.ToString())
+		//UE_LOG(LogTemp, Display, TEXT("Hit position: %s"), *hit.ImpactPoint.ToString())
 	}
  
 	Super::Fire();

@@ -14,7 +14,7 @@ class UGunSelectionMenu;
 struct FInputActionValue;
 class UInputAction;
 class UWidget_HUD;
-
+class AP_FPS;
 
 UCLASS()
 class M012237NC_API APC_FPS : public APlayerController , public IScorable, public IWeaponHolder, public IGenericTeamAgentInterface
@@ -60,6 +60,8 @@ protected:
 	int _PlayerPoints;
 	bool _CanExit = false;
 
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+	TObjectPtr<AP_FPS>  _PlayerPawn;
 	
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UWidget_HUD> _HUDWidgetClass;
@@ -74,6 +76,7 @@ protected:
 	virtual void SetupInputComponent() override;
 
 	virtual void AddScore_Implementation(int points) override;
+	
 	virtual void ExitTrue_Implementation() override;
 	virtual void UpdateAmmoUI_Implementation(int CurrentAmmo, int MaxAmmo) override;
 	virtual void ChooseWeapon_Implementation() override;
@@ -103,6 +106,8 @@ private:
 	void ChangeWeapon(UWeaponType* Weapon);
 
 	virtual void OnPossess(APawn* InPawn) override;
-	
+
+	UFUNCTION()
+	void UpdateHealth(float newHealth, float maxHealth, float change);
 
 };

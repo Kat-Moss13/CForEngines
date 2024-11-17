@@ -19,6 +19,7 @@ void UWidget_HUD::NativeConstruct()
 
 void UWidget_HUD::UpdateHeatlh(float newHealthRatio)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Hit position: %f"), newHealthRatio);
 	if(HealthBar) {HealthBar->SetPercent(newHealthRatio);}
 }
 

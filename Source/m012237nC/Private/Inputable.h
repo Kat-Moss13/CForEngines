@@ -2,9 +2,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "UObject/Interface.h"
 #include "Inputable.generated.h"
 
+class AP_FPS;
 class AAIPatrolPath;
 class UBehaviorTree;
 
@@ -89,5 +91,8 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void SetMaxWalkSpeed(float speed);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	AP_FPS* GetPawn();
 	
 };

@@ -12,8 +12,11 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "Camera/CameraComponent.h"
 #include "Components/ArrowComponent.h"
+#include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 
@@ -28,13 +31,25 @@ AP_FPS::AP_FPS()
 	_Capsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule"));
 	_Capsule->SetupAttachment(RootComponent);
 	
-	_WeaponAttachPoint = CreateDefaultSubobject<USceneComponent>(TEXT("Weapon Attach"));
-	_WeaponAttachPoint->SetupAttachment(_Camera);
+	_SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
+	_SkeletalMesh->SetupAttachment(_Camera);
 
 	_InteractArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Interact Arrow"));
 	_InteractArrow->SetupAttachment(_Camera);
 
+	_WeaponAttachPoint = CreateDefaultSubobject<USceneComponent>(TEXT("Weapon Attach Point"));
+	_WeaponAttachPoint->SetupAttachment(_Camera);
+
+	_RightFistBoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Right Fist Box"));
+
+
 	SprintSpeedMultiplier = 2;
+
+	if(_RightFistBoxCollision)
+	{
+		FAttachmentTransformRules const Rules{EAttachmentRule::SnapToTarget,EAttachmentRule::SnapToTarget, EAttachmentRule::KeepWorld, false};
+		_RightFistBoxCollision->AttachToComponent(GetMesh(), Rules, FName("RightHandSocket"));
+	}
 }
 
 void AP_FPS::BeginPlay()
@@ -42,20 +57,43 @@ void AP_FPS::BeginPlay()
 	Super::BeginPlay();
 	_Health->OnDead.AddUniqueDynamic(this, &AP_FPS::Handle_HealthDead);
 	_Health->OnDamaged.AddUniqueDynamic(this, &AP_FPS::Handle_HealthDamaged);
+	_RightFistBoxCollision->OnComponentBeginOverlap.AddUniqueDynamic(this, &AP_FPS::AP_FPS::OnAttackOverlapBegin);
+	_RightFistBoxCollision->OnComponentEndOverlap.AddUniqueDynamic(this, &AP_FPS::AP_FPS::OnAttackOverlapEnd);
 	
 }
 
 void AP_FPS::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
-	if(_DefaultWeapon)
+	if(CanHaveGun)
 	{
-		FActorSpawnParameters spawnParams;
-		spawnParams.Owner = this;
-		spawnParams.Instigator = this;
-		_WeaponRef = GetWorld()->SpawnActor<AWeapon_Base>(_DefaultWeapon, _WeaponAttachPoint->GetComponentTransform(), spawnParams);
-		_WeaponRef->AttachToComponent(_WeaponAttachPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
+		if(Controller == UGameplayStatics::GetPlayerController(GetWorld(), 0))
+		{
+			if(_DefaultWeapon)
+			{
+				FActorSpawnParameters spawnParams;
+				spawnParams.Owner = this;
+				spawnParams.Instigator = this;
+				_WeaponRef = GetWorld()->SpawnActor<AWeapon_Base>(_DefaultWeapon, _WeaponAttachPoint->GetComponentTransform(), spawnParams);
+				_WeaponRef->AttachToComponent(_WeaponAttachPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
+		
+			}
+		}
+		else
+		{
+			if(_DefaultWeapon)
+			{
+				FActorSpawnParameters spawnParams;
+				spawnParams.Owner = this;
+				spawnParams.Instigator = this;
+				_WeaponRef = GetWorld()->SpawnActor<AWeapon_Base>(_DefaultWeapon, _SkeletalMesh->GetSocketTransform(FName("LeftHandSocket")), spawnParams);
+				_WeaponRef->AttachToComponent(_SkeletalMesh, FAttachmentTransformRules::SnapToTargetIncludingScale,(FName("LeftHandSocket")));
+		
+			}
+		}
 	}
+	
+	
 }
 
 
@@ -76,7 +114,12 @@ FVector AP_FPS::PawnPosition_Implementation()
 
 void AP_FPS::UpdateWeapon_Implementation(UWeaponType* Weapon)
 {
-	_WeaponRef->Init(Weapon);
+	if(CanHaveGun)
+	{
+		_WeaponRef->Init(Weapon);
+	}
+	
+	
 }
 
 void AP_FPS::UpdateAIWeapon_Implementation()
@@ -130,11 +173,23 @@ AP_FPS* AP_FPS::GetSpecificPawn_Implementation()
 	return this;
 }
 
+void AP_FPS::AttackEnd_Implementation()
+{
+	_RightFistBoxCollision->SetCollisionProfileName("NoCollision");
+	_RightFistBoxCollision->SetNotifyRigidBodyCollision(false);
+}
+
+void AP_FPS::AttackStart_Implementation()
+{
+	_RightFistBoxCollision->SetCollisionProfileName("Fist");
+	_RightFistBoxCollision->SetNotifyRigidBodyCollision(true);
+	
+}
+
 void AP_FPS::Input_FirePressed_Implementation()
 {
 	if(_WeaponRef)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("got to fire"));
 		_WeaponRef->StartFire(this->Controller);
 	}
 }
@@ -254,15 +309,48 @@ UInputMappingContext* AP_FPS::GetMappingContext_Implementation()
 	return _InputMapping;
 }
 
-
+AP_FPS* AP_FPS::GetPawn_Implementation()
+{
+	return this;
+}
 
 
 void AP_FPS::Handle_HealthDead(AController* causer)
 {
+	if(this->ActorHasTag(FName("AI")))
+	{
+		Destroy();
+	}
+	else
+	{
+		//todo: call up and restart? 
+	}
 	
 }
 
 void AP_FPS::Handle_HealthDamaged(float current, float max, float change)
+{
+	
+	OnPawnDamaged.Broadcast(current, max, change);
+}
+
+void AP_FPS::OnAttackOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if(OtherActor ==this)
+	{
+		return;
+	}
+	if(OtherActor ==UGameplayStatics::GetPlayerPawn(GetWorld(), 0))
+	{
+		UGameplayStatics::ApplyDamage(OtherActor, 5,
+		   GetOwner()->GetInstigatorController(), GetOwner(),
+		   UDamageType::StaticClass());
+	}
+}
+
+void AP_FPS::OnAttackOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex)
 {
 	
 }

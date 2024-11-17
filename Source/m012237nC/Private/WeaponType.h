@@ -41,4 +41,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float _FireDelay;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector _Scalar;
 };

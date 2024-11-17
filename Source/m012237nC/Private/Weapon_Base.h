@@ -26,6 +26,8 @@ public:
 	void StartFire(AController* causer);
 	void StopFire();
     void Reload(AController* causer);
+
+
     
 protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
@@ -64,6 +66,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float _FireDelay;
 	FTimerHandle _FireDelayTimer;
+
+	
  
 	UFUNCTION()
 	virtual void Fire();

@@ -30,7 +30,7 @@ AWeapon_Base::AWeapon_Base()
 	_Silencer->SetupAttachment(RootComponent);
  
 	_Muzzle = CreateDefaultSubobject<UArrowComponent>(TEXT("Muzzle"));
-	_Muzzle->SetupAttachment(_Root);
+	_Muzzle->SetupAttachment(RootComponent);
 	
 }
 
@@ -44,17 +44,25 @@ void AWeapon_Base::Init(UWeaponType* type)
 		_Hammer->SetStaticMesh(_TypeData->_Hammer);
 		_Slide->SetStaticMesh(_TypeData->_Slide);
 		_Mag->SetStaticMesh(_TypeData->_Mag);
-		TArray<UStaticMeshSocket*> Sockets = _TypeData->_WeaponMesh->GetSocketsByTag(TEXT("Muzzle"));
+		_Mesh->SetWorldScale3D(_TypeData->_Scalar);
+		_Hammer->SetWorldScale3D(_TypeData->_Scalar);
+		_Slide->SetWorldScale3D(_TypeData->_Scalar);
+		_Mag->SetWorldScale3D(_TypeData->_Scalar);
+		_Silencer->SetWorldScale3D(_TypeData->_Scalar);
 
 		if(_TypeData->SilencerOn == true)
 		{
 			_Silencer->SetStaticMesh(_TypeData->_Silencer);
+			
 		}
+		TArray<UStaticMeshSocket*> Sockets = _TypeData->_WeaponMesh->GetSocketsByTag(TEXT("Muzzle"));
 		if(Sockets.IsEmpty())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Socket Array Empty"));
 		}
-		_Muzzle->SetRelativeLocation(Sockets[0]->RelativeLocation);
+		
+		_Muzzle->SetRelativeLocation(Sockets[0]->RelativeLocation/(_TypeData->_Scalar.X*10));
+		
 		_FireDelay = _TypeData->_FireDelay;
 		_MaxAmmo = _TypeData->_MaxAmmo;
 		_AmmoClip = _TypeData->_AmmoClip;
@@ -67,19 +75,23 @@ void AWeapon_Base::Init(UWeaponType* type)
 
 void AWeapon_Base::StartFire(AController* causer)
 {
-	if(_CurrentAmmo > 0)
+	if(GetWorld())
 	{
-		_CurrentAmmo--;
-		if(UKismetSystemLibrary::DoesImplementInterface(causer, UWeaponHolder::StaticClass()))
+		if(_CurrentAmmo > 0)
 		{
-			IWeaponHolder::Execute_UpdateAmmoUI(causer, _CurrentAmmo, _MaxAmmo);
-		}
-		Fire();
-		if(_FireDelay != 0.f)
-		{
-			GetWorld()->GetTimerManager().SetTimer(_FireDelayTimer, this, &AWeapon_Base::Fire, _FireDelay, true);
+			_CurrentAmmo--;
+			if(UKismetSystemLibrary::DoesImplementInterface(causer, UWeaponHolder::StaticClass()))
+			{
+				IWeaponHolder::Execute_UpdateAmmoUI(causer, _CurrentAmmo, _MaxAmmo);
+			}
+			Fire();
+			if(_FireDelay != 0.f)
+			{
+				GetWorld()->GetTimerManager().SetTimer(_FireDelayTimer, this, &AWeapon_Base::Fire, _FireDelay, true);
+			}
 		}
 	}
+	
 	
 }
  

@@ -23,8 +23,9 @@ void UHealthComponent::BeginPlay()
 void UHealthComponent::DamageTaken(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
 	AController* InstigatedBy, AActor* DamageCauser)
 {
-	const float change = FMath::Min(_CurrentHealth, Damage);
+	const float change = FMath::Min(_CurrentHealth, (Damage));
 	_CurrentHealth -= change;
+
 	OnDamaged.Broadcast(_CurrentHealth, _MaxHealth, change);
 	if(FMath::IsNearlyZero(_CurrentHealth)){ OnDead.Broadcast(InstigatedBy); }
 }

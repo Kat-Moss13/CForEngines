@@ -31,4 +31,10 @@ public:
 	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	int MeleeAttack();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void AttackStart();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void AttackEnd();
 };
