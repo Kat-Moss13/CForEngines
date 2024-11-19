@@ -13,7 +13,7 @@ UGameRule_Treasure::UGameRule_Treasure()
 void UGameRule_Treasure::Init()
 {
 	Super::Init();
-	UTreasureComponent::onTreasureRegistered.AddUniqueDynamic(this, &UGameRule_Treasure::UGameRule_Treasure::Handle_TreasureRegistered);
+	UTreasureComponent::onTreasureRegistered.AddUniqueDynamic(this, &UGameRule_Treasure::Handle_TreasureRegistered);
 	OnRequestTreasures.Broadcast();
 }
 
