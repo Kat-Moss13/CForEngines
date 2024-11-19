@@ -1,20 +1,16 @@
 ﻿
 #include "P_FPS.h"
 
-#include <cmath>
-
-#include "FrameTypes.h"
 #include "HealthComponent.h"
 #include "Interact.h"
 #include "Weapon_Base.h"
 #include "WeaponType.h"
-#include "AIPatrolPath.h"
-#include "BehaviorTree/BehaviorTree.h"
+
 #include "Camera/CameraComponent.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "Engine/SkeletalMeshSocket.h"
+
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -27,13 +23,7 @@ AP_FPS::AP_FPS()
 	_Camera->SetupAttachment(RootComponent);
 
 	_Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
-
-	_Capsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule"));
-	_Capsule->SetupAttachment(RootComponent);
 	
-	_SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
-	_SkeletalMesh->SetupAttachment(_Camera);
-
 	_InteractArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Interact Arrow"));
 	_InteractArrow->SetupAttachment(_Camera);
 
@@ -41,15 +31,11 @@ AP_FPS::AP_FPS()
 	_WeaponAttachPoint->SetupAttachment(_Camera);
 
 	_RightFistBoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Right Fist Box"));
-
+	
 
 	SprintSpeedMultiplier = 2;
 
-	if(_RightFistBoxCollision)
-	{
-		FAttachmentTransformRules const Rules{EAttachmentRule::SnapToTarget,EAttachmentRule::SnapToTarget, EAttachmentRule::KeepWorld, false};
-		_RightFistBoxCollision->AttachToComponent(GetMesh(), Rules, FName("RightHandSocket"));
-	}
+	
 }
 
 void AP_FPS::BeginPlay()
@@ -65,6 +51,15 @@ void AP_FPS::BeginPlay()
 void AP_FPS::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
+	if(Controller != UGameplayStatics::GetPlayerController(GetWorld(), 0))
+	{
+		if(_RightFistBoxCollision)
+		{
+			FAttachmentTransformRules const Rules{EAttachmentRule::SnapToTarget,EAttachmentRule::SnapToTarget, EAttachmentRule::KeepWorld, false};
+			_RightFistBoxCollision->AttachToComponent(GetMesh(), Rules, FName("RightHandSocket"));
+		}
+	}
+	
 	if(CanHaveGun)
 	{
 		if(Controller == UGameplayStatics::GetPlayerController(GetWorld(), 0))
@@ -86,8 +81,8 @@ void AP_FPS::PossessedBy(AController* NewController)
 				FActorSpawnParameters spawnParams;
 				spawnParams.Owner = this;
 				spawnParams.Instigator = this;
-				_WeaponRef = GetWorld()->SpawnActor<AWeapon_Base>(_DefaultWeapon, _SkeletalMesh->GetSocketTransform(FName("LeftHandSocket")), spawnParams);
-				_WeaponRef->AttachToComponent(_SkeletalMesh, FAttachmentTransformRules::SnapToTargetIncludingScale,(FName("LeftHandSocket")));
+				_WeaponRef = GetWorld()->SpawnActor<AWeapon_Base>(_DefaultWeapon, GetMesh()->GetSocketTransform(FName("LeftHandSocket")), spawnParams);
+				_WeaponRef->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale,(FName("LeftHandSocket")));
 		
 			}
 		}
@@ -190,6 +185,7 @@ void AP_FPS::Input_FirePressed_Implementation()
 {
 	if(_WeaponRef)
 	{
+
 		_WeaponRef->StartFire(this->Controller);
 	}
 }

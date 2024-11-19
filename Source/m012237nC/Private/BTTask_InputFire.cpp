@@ -31,7 +31,8 @@ EBTNodeResult::Type UBTTask_InputFire::ExecuteTask(UBehaviorTreeComponent& Owner
 	if(UKismetSystemLibrary::DoesImplementInterface(pawn, UInputable::StaticClass()))
 	{
 		IInputable::Execute_Input_FirePressed(pawn);
-		return EBTNodeResult::InProgress;
+
+		return EBTNodeResult::Succeeded;
 	}
 	return EBTNodeResult::Failed;
 	
@@ -44,7 +45,7 @@ EBTNodeResult::Type UBTTask_InputFire::AbortTask(UBehaviorTreeComponent& OwnerCo
 	if(UKismetSystemLibrary::DoesImplementInterface(pawn, UInputable::StaticClass()))
 	{
 		IInputable::Execute_Input_FireReleased(pawn);
-		return EBTNodeResult::InProgress;
+		return EBTNodeResult::Succeeded;
 	}
 	
 	return Super::AbortTask(OwnerComp, NodeMemory);

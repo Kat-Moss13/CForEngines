@@ -4,6 +4,7 @@
 #include "WeaponType.h"
 #include "Components/ArrowComponent.h"
 #include "Engine/StaticMeshSocket.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 AWeapon_Base::AWeapon_Base()
@@ -77,19 +78,32 @@ void AWeapon_Base::StartFire(AController* causer)
 {
 	if(GetWorld())
 	{
-		if(_CurrentAmmo > 0)
+		if(causer == UGameplayStatics::GetPlayerController(GetWorld(), 0))
 		{
-			_CurrentAmmo--;
-			if(UKismetSystemLibrary::DoesImplementInterface(causer, UWeaponHolder::StaticClass()))
+			if(_CurrentAmmo > 0)
 			{
-				IWeaponHolder::Execute_UpdateAmmoUI(causer, _CurrentAmmo, _MaxAmmo);
+
+				_CurrentAmmo--;
+				if(UKismetSystemLibrary::DoesImplementInterface(causer, UWeaponHolder::StaticClass()))
+				{
+					IWeaponHolder::Execute_UpdateAmmoUI(causer, _CurrentAmmo, _MaxAmmo);
+				}
+				Fire();
+				if(_FireDelay != 0.f)
+				{
+					GetWorld()->GetTimerManager().SetTimer(_FireDelayTimer, this, &AWeapon_Base::Fire, _FireDelay, true);
+				}
 			}
+		}
+		else
+		{
 			Fire();
 			if(_FireDelay != 0.f)
 			{
 				GetWorld()->GetTimerManager().SetTimer(_FireDelayTimer, this, &AWeapon_Base::Fire, _FireDelay, true);
 			}
 		}
+		
 	}
 	
 	

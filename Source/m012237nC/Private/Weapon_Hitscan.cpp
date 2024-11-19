@@ -14,7 +14,6 @@ void AWeapon_Hitscan::Fire()
 	FVector start = _Muzzle->GetComponentLocation();
 	FVector end = start + (_Muzzle->GetForwardVector() * 1000);
 	TArray<AActor*> ActorsToIgnore;
- 
 	if(UKismetSystemLibrary::LineTraceSingle(world, start, end,
 	   UEngineTypes::ConvertToTraceType(ECC_GameTraceChannel2), false,
 	   ActorsToIgnore, EDrawDebugTrace::ForDuration, hit, true, FLinearColor::Red,
