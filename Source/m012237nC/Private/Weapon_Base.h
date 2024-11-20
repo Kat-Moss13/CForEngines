@@ -27,7 +27,8 @@ public:
 	void StopFire();
     void Reload(AController* causer);
 
-
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void fireSound();
     
 protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
@@ -72,6 +73,6 @@ protected:
 	UFUNCTION()
 	virtual void Fire();
 
-
+	
 	
 };

@@ -116,6 +116,8 @@ void AWeapon_Base::StopFire()
  
 void AWeapon_Base::Fire()
 {
+
+	fireSound();
 	OnFire.Broadcast();
 	
 }
@@ -147,5 +149,10 @@ void AWeapon_Base::Reload(AController* causer)
 	{
 		IWeaponHolder::Execute_UpdateAmmoUI(causer, _CurrentAmmo, _MaxAmmo);
 	}
+}
+
+void AWeapon_Base::fireSound_Implementation()
+{
+	
 }
 
