@@ -18,6 +18,8 @@ class UArrowComponent;
 class AWeapon_Base;
 class AAIPatrolPath;
 
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPlayerDeathSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FHealthDamagedPawnSignature, float, newHealth, float, maxHealth, float, change);
 UCLASS(Abstract)
 class M012237NC_API AP_FPS : public ACharacter, public IInputable, public IChangeWeapon, public ICombat
@@ -30,6 +32,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FHealthDamagedPawnSignature OnPawnDamaged;
+
+	UPROPERTY(BlueprintAssignable)
+	FPlayerDeathSignature OnPlayerDeath;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character Movement")
 	float SprintSpeedMultiplier;

@@ -54,4 +54,7 @@ private:
 	void Handle_GameRuleComplete(AController* scorer);
 	UFUNCTION()
 	void Handle_GameRulePointsScored(AController* scorer, int points);
+
+	UFUNCTION()
+	void Handle_PlayerDeath();
 };

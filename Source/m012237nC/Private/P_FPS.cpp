@@ -320,7 +320,8 @@ void AP_FPS::Handle_HealthDead(AController* causer)
 	}
 	else
 	{
-		//todo: call up and restart? 
+		OnPlayerDeath.Broadcast();
+		                      
 	}
 	
 }
