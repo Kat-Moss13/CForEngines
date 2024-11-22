@@ -134,6 +134,11 @@ void AGM_FPS::Handle_GameRulePointsScored(AController* scorer, int points)
 	}
 }
 
+void AGM_FPS::Handle_PlayerDeath()
+{
+	
+}
+
 
 bool AGM_FPS::ReadyToStartMatch_Implementation() { return false; }
  

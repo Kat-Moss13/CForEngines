@@ -316,7 +316,11 @@ void AP_FPS::Handle_HealthDead(AController* causer)
 	if(this->ActorHasTag(FName("AI")))
 	{
 		Destroy();
-		_WeaponRef->Destroy();
+		if(CanHaveGun)
+		{
+			_WeaponRef->Destroy();
+		}
+		
 	}
 	else
 	{
