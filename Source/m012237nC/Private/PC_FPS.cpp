@@ -33,6 +33,7 @@ void APC_FPS::BeginPlay()
 	if(_WinWidgetClass)
 	{
 		_WinWidget = CreateWidget<UWidget_WinScreen, APC_FPS*>(this, _WinWidgetClass.Get());
+		UE_LOG(LogTemp, Display, TEXT("exists"));
 	}
 	bEnableClickEvents = true;
 	PrimaryActorTick.bCanEverTick = true;

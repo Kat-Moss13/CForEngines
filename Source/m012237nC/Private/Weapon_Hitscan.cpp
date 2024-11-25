@@ -16,7 +16,7 @@ void AWeapon_Hitscan::Fire()
 	TArray<AActor*> ActorsToIgnore;
 	if(UKismetSystemLibrary::LineTraceSingle(world, start, end,
 	   UEngineTypes::ConvertToTraceType(ECC_GameTraceChannel2), false,
-	   ActorsToIgnore, EDrawDebugTrace::ForDuration, hit, true, FLinearColor::Red,
+	   ActorsToIgnore, EDrawDebugTrace::None, hit, true, FLinearColor::Red,
 	   FLinearColor::Green, 5))
 	{
 		UGameplayStatics::ApplyDamage(hit.GetActor(), _TypeData->_Damage,

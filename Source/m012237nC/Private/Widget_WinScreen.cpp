@@ -1,12 +1,14 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-#include "Components/Button.h"
 #include "Widget_WinScreen.h"
+#include "Components/Button.h"
+
 
 #include "Kismet/GameplayStatics.h"
 
-UWidget_WinScreen::UWidget_WinScreen()
+
+void UWidget_WinScreen::NativeConstruct()
 {
+	Super::NativeConstruct();
 	StartAgainButton->OnClicked.AddDynamic(this, &UWidget_WinScreen::StartAgain);
 }
 

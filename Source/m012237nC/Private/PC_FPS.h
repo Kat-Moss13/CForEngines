@@ -70,11 +70,12 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UGunSelectionMenu> _GunWidgetClass;
-	TObjectPtr<UGunSelectionMenu> _GunWidget;#
+	TObjectPtr<UGunSelectionMenu> _GunWidget;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UWidget_WinScreen> _WinWidgetClass;
 	TObjectPtr<UWidget_WinScreen> _WinWidget;
+
 
 	
 

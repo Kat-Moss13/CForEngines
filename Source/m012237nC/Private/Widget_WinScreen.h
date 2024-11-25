@@ -7,11 +7,13 @@
 class UTextBlock;
 class UButton;
 
-UCLASS()
+UCLASS(Abstract, BlueprintType)
 class M012237NC_API UWidget_WinScreen : public UUserWidget
 {
 	GENERATED_BODY()
-	UWidget_WinScreen();
+	
+public:
+	virtual void NativeConstruct() override;
 	
 private:
 	UPROPERTY(meta = (BindWidget))

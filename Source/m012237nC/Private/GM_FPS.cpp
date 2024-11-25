@@ -53,10 +53,11 @@ void AGM_FPS::HandleMatchIsWaitingToStart()
 			_GameRulesLeft++;
 		}
 	}
-
-	for(UActorComponent* comp : outComponents)
+	TArray<AActor*> outActors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ADoor_Interact::StaticClass(), outActors);
+	for(AActor* actor : outActors)
 	{
-		if(ADoor_Interact* doorInteract = Cast<ADoor_Interact>(comp))
+		if(ADoor_Interact* doorInteract = Cast<ADoor_Interact>(actor))
 		{
 			doorInteract->OnSuccess.AddUniqueDynamic(this, &AGM_FPS::WinGame);
 		}
