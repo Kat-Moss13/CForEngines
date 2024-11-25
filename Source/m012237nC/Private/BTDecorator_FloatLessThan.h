@@ -13,7 +13,7 @@ UCLASS()
 class M012237NC_API UBTDecorator_FloatLessThan : public UBTDecorator
 {
 	GENERATED_BODY()
-	typedef FBTFloatLessThanDecoratorMemory TNodeInstanceMemory;
+	using TNodeInstanceMemory = FBTFloatLessThanDecoratorMemory;
 
 public:
 	UBTDecorator_FloatLessThan(const FObjectInitializer& ObjectInitializer);

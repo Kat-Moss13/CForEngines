@@ -1,5 +1,4 @@
-﻿
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
@@ -11,10 +10,10 @@ UCLASS(Abstract, BlueprintType)
 class M012237NC_API UWidget_WinScreen : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
 public:
 	virtual void NativeConstruct() override;
-	
+
 private:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> WinText;

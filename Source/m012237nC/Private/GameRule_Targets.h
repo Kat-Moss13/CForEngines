@@ -13,7 +13,6 @@ class M012237NC_API UGameRule_Targets : public UGameRule
 	GENERATED_BODY()
 
 public:
-
 	UGameRule_Targets();
 
 	static inline FGRTargetRequestTargetsSignature OnRequestTargets;
@@ -31,5 +30,4 @@ private:
 	void Handle_TargetRegistered(UTargetComponent* target);
 	UFUNCTION()
 	void Handle_TargetDestroyed(UTargetComponent* target, AController* causer, int targetValue);
-	
 };

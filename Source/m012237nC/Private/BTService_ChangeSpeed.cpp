@@ -19,9 +19,9 @@ void UBTService_ChangeSpeed::OnBecomeRelevant(UBehaviorTreeComponent& OwnerComp,
 	const UBlackboardComponent* BBComp = OwnerComp.GetBlackboardComponent();
 	UObject* pawn = BBComp->GetValueAsObject(_Key_Pawn.SelectedKeyName);
 
-	auto const index = BBComp->GetValueAsInt(GetSelectedBlackboardKey());
+	const auto index = BBComp->GetValueAsInt(GetSelectedBlackboardKey());
 
-	if(UKismetSystemLibrary::DoesImplementInterface(pawn, UInputable::StaticClass()))
+	if (UKismetSystemLibrary::DoesImplementInterface(pawn, UInputable::StaticClass()))
 	{
 		IInputable::Execute_SetMaxWalkSpeed(pawn, _Speed);
 	}

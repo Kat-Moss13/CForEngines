@@ -1,6 +1,4 @@
-﻿
-
-#include "Door_Interact.h"
+﻿#include "Door_Interact.h"
 
 
 ADoor_Interact::ADoor_Interact()
@@ -16,6 +14,3 @@ void ADoor_Interact::Interact_Implementation(AController* causer, bool canExit)
 		OnSuccess.Broadcast(causer);
 	}
 }
-
-
-

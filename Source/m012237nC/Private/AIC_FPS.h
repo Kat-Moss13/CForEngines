@@ -18,22 +18,18 @@ public:
 	AAIC_FPS();
 
 	virtual ETeamAttitude::Type GetTeamAttitudeTowards(const AActor& Other) const override;
-	
 
 protected:
-	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAIPerceptionComponent> _AIPerception;
 	TObjectPtr<UAISenseConfig_Sight> _AISense_Sight;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UWeaponType> _WeaponType;
-	
+
 	virtual void BeginPlay() override;
 	virtual void OnPossess(APawn* InPawn) override;
-	
 
 private:
 	UFUNCTION()
 	void Handle_TargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
-
 };

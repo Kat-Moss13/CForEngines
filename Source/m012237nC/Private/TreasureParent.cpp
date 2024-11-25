@@ -6,7 +6,6 @@
 
 ATreasureParent::ATreasureParent()
 {
-	
 	_Collider = CreateDefaultSubobject<USphereComponent>(TEXT("Root"));
 	RootComponent = _Collider;
 
@@ -19,11 +18,7 @@ ATreasureParent::ATreasureParent()
 }
 
 
-void ATreasureParent::PlayTreasureSound_Implementation(UTreasureComponent* target, AController* causer, int treasureValue)
+void ATreasureParent::PlayTreasureSound_Implementation(UTreasureComponent* target, AController* causer,
+                                                       int treasureValue)
 {
-	
 }
-
-
-
-

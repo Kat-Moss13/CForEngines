@@ -17,7 +17,6 @@ class M012237NC_API ABasicActor : public AActor
 	GENERATED_BODY()
 
 public:
-	
 	ABasicActor();
 
 protected:
@@ -31,10 +30,8 @@ protected:
 	TObjectPtr<UHealthComponent> _Health;
 
 	virtual void BeginPlay() override;
-	
+
 	UFUNCTION()
 	void Handle_ColliderHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
-		UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
-
-	
+	                        UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 };

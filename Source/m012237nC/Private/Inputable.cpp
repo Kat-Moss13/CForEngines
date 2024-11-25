@@ -1,5 +1,1 @@
-﻿
-
-#include "Inputable.h"
-
-
+﻿#include "Inputable.h"

@@ -18,14 +18,14 @@ EBTNodeResult::Type UBTTask_FindRandomLocation::ExecuteTask(UBehaviorTreeCompone
 {
 	const UBlackboardComponent* BBComp = OwnerComp.GetBlackboardComponent();
 	UObject* pawn = BBComp->GetValueAsObject(Key_Pawn.SelectedKeyName);
-	if(UKismetSystemLibrary::DoesImplementInterface(pawn, UInputable::StaticClass()))
+	if (UKismetSystemLibrary::DoesImplementInterface(pawn, UInputable::StaticClass()))
 	{
 		FVector AIPosition = IInputable::Execute_PawnPosition(pawn);
 
-		if(UNavigationSystemV1* const NavSys = UNavigationSystemV1::GetCurrent(GetWorld()))
+		if (UNavigationSystemV1* const NavSys = UNavigationSystemV1::GetCurrent(GetWorld()))
 		{
 			FNavLocation Location;
-			if(NavSys->GetRandomPointInNavigableRadius(AIPosition, SearchRadius, Location))
+			if (NavSys->GetRandomPointInNavigableRadius(AIPosition, SearchRadius, Location))
 			{
 				OwnerComp.GetBlackboardComponent()->SetValueAsVector(GetSelectedBlackboardKey(), Location.Location);
 			}

@@ -17,13 +17,14 @@ void UBTService_IsPlayerInMeleeRange::OnBecomeRelevant(UBehaviorTreeComponent& O
 {
 	const UBlackboardComponent* BBComp = OwnerComp.GetBlackboardComponent();
 	UObject* pawn = BBComp->GetValueAsObject(_Key_Pawn.SelectedKeyName);
-	
-	if(UKismetSystemLibrary::DoesImplementInterface(pawn, UCombat::StaticClass()))
+
+	if (UKismetSystemLibrary::DoesImplementInterface(pawn, UCombat::StaticClass()))
 	{
 		AIPawn = ICombat::Execute_GetAIPawn(pawn);
 	}
 
-	APawn const*  player = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-	
-	OwnerComp.GetBlackboardComponent()->SetValueAsBool(GetSelectedBlackboardKey(), AIPawn->GetDistanceTo(player) <=MeleeRange);
+	const APawn* player = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+
+	OwnerComp.GetBlackboardComponent()->SetValueAsBool(GetSelectedBlackboardKey(),
+	                                                   AIPawn->GetDistanceTo(player) <= MeleeRange);
 }

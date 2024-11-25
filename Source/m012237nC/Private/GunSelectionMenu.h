@@ -8,7 +8,8 @@ class UTextBlock;
 class UButton;
 class UWeaponType;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWeaponChangeSignature, UWeaponType* , weapon);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWeaponChangeSignature, UWeaponType*, weapon);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGameStartSignature);
 
 UCLASS(Abstract, BlueprintType)
@@ -19,7 +20,7 @@ class M012237NC_API UGunSelectionMenu : public UUserWidget
 public:
 	virtual void NativeConstruct() override;
 
-	
+
 	bool WeaponSelected = false;
 
 	UPROPERTY(BlueprintAssignable)
@@ -66,4 +67,3 @@ private:
 	UFUNCTION()
 	void UpdateGunSelection(UWeaponType* weaponChosen);
 };
-

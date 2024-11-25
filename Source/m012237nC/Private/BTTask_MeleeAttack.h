@@ -1,5 +1,4 @@
-﻿
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/Tasks/BTTask_BlackboardBase.h"
@@ -16,10 +15,10 @@ class M012237NC_API UBTTask_MeleeAttack : public UBTTask_BlackboardBase
 public:
 	UBTTask_MeleeAttack();
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
-	
+
 	UPROPERTY(EditAnywhere, Category = "Blackboard")
 	FBlackboardKeySelector _Key_Pawn;
-	
+
 	AP_FPS* AIPawn;
 
 private:

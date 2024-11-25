@@ -13,9 +13,3 @@ AInteract_Parent::AInteract_Parent()
 	_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	_Mesh->SetupAttachment(RootComponent);
 }
-
-
-
-
-
-

@@ -11,7 +11,6 @@ class M012237NC_API UWeaponType : public UDataAsset
 	GENERATED_BODY()
 
 public:
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UStaticMesh> _WeaponMesh;
 
@@ -26,16 +25,16 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UStaticMesh> _Silencer;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool SilencerOn;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float _Damage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int _MaxAmmo;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int _AmmoClip;
 

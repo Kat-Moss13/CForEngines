@@ -14,17 +14,16 @@ void UBTDecorator_FloatLessThan::InitializeFromAsset(UBehaviorTree& Asset)
 	Super::InitializeFromAsset(Asset);
 
 	UBlackboardData* BBAsset = GetBlackboardAsset();
-	if(ensure(BBAsset))
+	if (ensure(BBAsset))
 	{
 		Key_Value.ResolveSelectedKey(*BBAsset);
 		Key_Comparison.ResolveSelectedKey(*BBAsset);
-		
 	}
 }
 
 uint16 UBTDecorator_FloatLessThan::GetInstanceMemorySize() const
 {
-	return sizeof(FBTFloatLessThanDecoratorMemory);	
+	return sizeof(FBTFloatLessThanDecoratorMemory);
 }
 
 void UBTDecorator_FloatLessThan::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
@@ -32,7 +31,7 @@ void UBTDecorator_FloatLessThan::TickNode(UBehaviorTreeComponent& OwnerComp, uin
 	TNodeInstanceMemory* DecoratorMemory = CastInstanceNodeMemory<TNodeInstanceMemory>(NodeMemory);
 
 	const bool bResult = CalcConditionImpl(OwnerComp, NodeMemory);
-	if(bResult != DecoratorMemory->bLastRawResult)
+	if (bResult != DecoratorMemory->bLastRawResult)
 	{
 		DecoratorMemory->bLastRawResult = bResult;
 		OwnerComp.RequestExecution(this);
@@ -53,5 +52,5 @@ bool UBTDecorator_FloatLessThan::CalcConditionImpl(UBehaviorTreeComponent& Owner
 void UBTDecorator_FloatLessThan::OnBecomeRelevant(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	TNodeInstanceMemory* DecoratorMemory = CastInstanceNodeMemory<TNodeInstanceMemory>(NodeMemory);
-	DecoratorMemory->bLastRawResult = CalcConditionImpl(OwnerComp,NodeMemory);
+	DecoratorMemory->bLastRawResult = CalcConditionImpl(OwnerComp, NodeMemory);
 }

@@ -1,5 +1,4 @@
-﻿
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "GenericTeamAgentInterface.h"
@@ -18,14 +17,13 @@ class UWidget_HUD;
 class AP_FPS;
 
 UCLASS()
-class M012237NC_API APC_FPS : public APlayerController , public IScorable, public IWeaponHolder, public IGenericTeamAgentInterface
+class M012237NC_API APC_FPS : public APlayerController, public IScorable, public IWeaponHolder,
+                              public IGenericTeamAgentInterface
 {
-
 	GENERATED_BODY()
 
 public:
 	virtual FGenericTeamId GetGenericTeamId() const override;
-	
 
 protected:
 	UPROPERTY(EditAnywhere, Category="Input")
@@ -62,8 +60,8 @@ protected:
 	bool _CanExit = false;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
-	TObjectPtr<AP_FPS>  _PlayerPawn;
-	
+	TObjectPtr<AP_FPS> _PlayerPawn;
+
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UWidget_HUD> _HUDWidgetClass;
 	TObjectPtr<UWidget_HUD> _HUDWidget;
@@ -74,17 +72,16 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UWidget_WinScreen> _WinWidgetClass;
+	UPROPERTY(EditAnywhere)
 	TObjectPtr<UWidget_WinScreen> _WinWidget;
 
-
-	
 
 	virtual void BeginPlay() override;
 
 	virtual void SetupInputComponent() override;
 
 	virtual void AddScore_Implementation(int points) override;
-	
+
 	virtual void ExitTrue_Implementation() override;
 	virtual void UpdateAmmoUI_Implementation(int CurrentAmmo, int MaxAmmo) override;
 	virtual void ChooseWeapon_Implementation() override;
@@ -118,5 +115,4 @@ private:
 
 	UFUNCTION()
 	void UpdateHealth(float newHealth, float maxHealth, float change);
-
 };

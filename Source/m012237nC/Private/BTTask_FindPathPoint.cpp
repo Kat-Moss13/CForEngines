@@ -1,5 +1,4 @@
-﻿
-#include "BTTask_FindPathPoint.h"
+﻿#include "BTTask_FindPathPoint.h"
 
 #include "AIPatrolPath.h"
 #include "Inputable.h"
@@ -16,19 +15,19 @@ EBTNodeResult::Type UBTTask_FindPathPoint::ExecuteTask(UBehaviorTreeComponent& O
 	const UBlackboardComponent* BBComp = OwnerComp.GetBlackboardComponent();
 	UObject* pawn = BBComp->GetValueAsObject(_Key_Pawn.SelectedKeyName);
 
-	auto const index = BBComp->GetValueAsInt(GetSelectedBlackboardKey());
+	const auto index = BBComp->GetValueAsInt(GetSelectedBlackboardKey());
 
-	if(UKismetSystemLibrary::DoesImplementInterface(pawn, UInputable::StaticClass()))
+	if (UKismetSystemLibrary::DoesImplementInterface(pawn, UInputable::StaticClass()))
 	{
-		FVector const Point = IInputable::Execute_GetPatrolPath(pawn)->GetPatrolPoints(index);
+		const FVector Point = IInputable::Execute_GetPatrolPath(pawn)->GetPatrolPoints(index);
 
-		UE::Math::TVector<double> const GlobalPoint = IInputable::Execute_GetPatrolPath(pawn)->GetActorTransform().
+		const UE::Math::TVector<double> GlobalPoint = IInputable::Execute_GetPatrolPath(pawn)->GetActorTransform().
 			TransformPosition(Point);
 
 		OwnerComp.GetBlackboardComponent()->SetValueAsVector(_PathPointKey.SelectedKeyName, GlobalPoint);
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 		return EBTNodeResult::Succeeded;
 	}
-	
-	return EBTNodeResult::Failed;;
+
+	return EBTNodeResult::Failed;
 }

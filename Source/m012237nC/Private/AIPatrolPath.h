@@ -10,10 +10,9 @@ class M012237NC_API AAIPatrolPath : public AActor
 	GENERATED_BODY()
 
 public:
-
 	AAIPatrolPath();
 
-	FVector GetPatrolPoints(int const index) const;
+	FVector GetPatrolPoints(const int index) const;
 	int Num() const;
 
 private:

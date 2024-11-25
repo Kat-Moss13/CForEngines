@@ -1,5 +1,4 @@
-﻿
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "ChangeWeapon.h"
@@ -20,14 +19,16 @@ class AAIPatrolPath;
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPlayerDeathSignature);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FHealthDamagedPawnSignature, float, newHealth, float, maxHealth, float, change);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FHealthDamagedPawnSignature, float, newHealth, float, maxHealth, float,
+                                               change);
+
 UCLASS(Abstract)
 class M012237NC_API AP_FPS : public ACharacter, public IInputable, public IChangeWeapon, public ICombat
 {
 	GENERATED_BODY()
 
 public:
-	
 	AP_FPS();
 
 	UPROPERTY(BlueprintAssignable)
@@ -35,13 +36,13 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FPlayerDeathSignature OnPlayerDeath;
-	
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character Movement")
 	float SprintSpeedMultiplier;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Movement")
 	bool CanHaveGun;
-	
+
 	bool isCrouched;
 
 	virtual void Input_FirePressed_Implementation() override;
@@ -64,8 +65,8 @@ public:
 
 	virtual void UpdateWeapon_Implementation(UWeaponType* Weapon) override;
 	virtual void UpdateAIWeapon_Implementation() override;
-	
-	
+
+
 	virtual UInputMappingContext* GetMappingContext_Implementation() override;
 
 	virtual AP_FPS* GetPawn_Implementation() override;
@@ -89,10 +90,8 @@ public:
 
 	virtual void AttackEnd_Implementation() override;
 	virtual void AttackStart_Implementation() override;
-	
+
 protected:
-
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UCameraComponent> _Camera;
 
@@ -101,12 +100,11 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UInputMappingContext> _InputMapping;
-	
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UCapsuleComponent> _Capsule;
 
 
-	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UBehaviorTree> _BehaviorTree;
 
@@ -117,7 +115,7 @@ protected:
 
 	UPROPERTY(EDITAnywhere, BlueprintReadWrite)
 	TObjectPtr<USceneComponent> _WeaponAttachPoint;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UWeaponType> _DefaultWeaponType;
 
@@ -126,26 +124,25 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	class UBoxComponent* _RightFistBoxCollision;
-	
+
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI", meta = (AllowPrivateAccess = "true"))
 	AAIPatrolPath* PatrolPath;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Animation", meta = (AllowPrivateAccess = "true"))
 	UAnimMontage* AnimMontage;
-	
+
 	UFUNCTION()
 	void Handle_HealthDead(AController* causer);
-	
+
 	UFUNCTION()
 	void Handle_HealthDamaged(float current, float max, float change);
 
 	UFUNCTION()
-	void OnAttackOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	void OnAttackOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	                          int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UFUNCTION()
-	void OnAttackOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-
-	
-	
+	void OnAttackOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	                        int32 OtherBodyIndex);
 };

@@ -4,28 +4,28 @@
 #include "Components/ArrowComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
- 
+
 void AWeapon_Hitscan::Fire()
 {
 	UWorld* const world = GetWorld();
-	if(world == nullptr) { return; }
- 
+	if (world == nullptr) { return; }
+
 	FHitResult hit(ForceInit);
 	FVector start = _Muzzle->GetComponentLocation();
 	FVector end = start + (_Muzzle->GetForwardVector() * 1000);
 	TArray<AActor*> ActorsToIgnore;
-	if(UKismetSystemLibrary::LineTraceSingle(world, start, end,
-	   UEngineTypes::ConvertToTraceType(ECC_GameTraceChannel2), false,
-	   ActorsToIgnore, EDrawDebugTrace::None, hit, true, FLinearColor::Red,
-	   FLinearColor::Green, 5))
+	if (UKismetSystemLibrary::LineTraceSingle(world, start, end,
+	                                          UEngineTypes::ConvertToTraceType(ECC_GameTraceChannel2), false,
+	                                          ActorsToIgnore, EDrawDebugTrace::None, hit, true, FLinearColor::Red,
+	                                          FLinearColor::Green, 5))
 	{
 		UGameplayStatics::ApplyDamage(hit.GetActor(), _TypeData->_Damage,
-		   GetOwner()->GetInstigatorController(), GetOwner(),
-		   UDamageType::StaticClass());
- 
-       
-		//UE_LOG(LogTemp, Display, TEXT("Hit position: %s"), *hit.ImpactPoint.ToString())
+		                              GetOwner()->GetInstigatorController(), GetOwner(),
+		                              UDamageType::StaticClass());
+
+
+		
 	}
- 
+
 	Super::Fire();
 }

@@ -1,5 +1,4 @@
-﻿
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 
@@ -49,13 +48,13 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Input_CrouchReleased();
-	
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Input_SprintPressed();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Input_SprintReleased();
-	
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Input_LeanLeftPressed();
 
@@ -79,7 +78,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	FVector PawnPosition();
-	
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UInputMappingContext* GetMappingContext();
 
@@ -94,5 +93,4 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	AP_FPS* GetPawn();
-	
 };

@@ -15,26 +15,28 @@ EBTNodeResult::Type UBTTask_IncrementPathIndex::ExecuteTask(UBehaviorTreeCompone
 {
 	const UBlackboardComponent* BBComp = OwnerComp.GetBlackboardComponent();
 	UObject* pawn = BBComp->GetValueAsObject(Key_Pawn.SelectedKeyName);
-	if(UKismetSystemLibrary::DoesImplementInterface(pawn, UInputable::StaticClass()))
+	if (UKismetSystemLibrary::DoesImplementInterface(pawn, UInputable::StaticClass()))
 	{
-		int const NoOfPoints = IInputable::Execute_GetPatrolPath(pawn)->Num();
-		int const MinIndex = 0;
-		int const MaxIndex = NoOfPoints - 1;
+		const int NoOfPoints = IInputable::Execute_GetPatrolPath(pawn)->Num();
+		constexpr int MinIndex = 0;
+		const int MaxIndex = NoOfPoints - 1;
 		int32 Index = BBComp->GetValueAsInt(GetSelectedBlackboardKey());
 
-		if(bBiDirectional)
+		if (bBiDirectional)
 		{
-			if(Index >= MaxIndex && Direction == EDirectionType::Forward)
+			if (Index >= MaxIndex && Direction == EDirectionType::Forward)
 			{
 				Direction = EDirectionType::Reverse;
 			}
-			else if(Index == MinIndex && Direction == EDirectionType::Reverse)
+			else if (Index == MinIndex && Direction == EDirectionType::Reverse)
 			{
 				Direction = EDirectionType::Forward;
 			}
 		}
 
-		OwnerComp.GetBlackboardComponent()->SetValueAsInt(GetSelectedBlackboardKey(), (Direction == EDirectionType::Forward ? ++Index: --Index) % NoOfPoints);
+		OwnerComp.GetBlackboardComponent()->SetValueAsInt(GetSelectedBlackboardKey(),
+		                                                  (Direction == EDirectionType::Forward ? ++Index : --Index) %
+		                                                  NoOfPoints);
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 		return EBTNodeResult::Succeeded;
 	}

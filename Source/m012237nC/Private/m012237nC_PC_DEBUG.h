@@ -15,14 +15,10 @@ class M012237NC_API Am012237nC_PC_DEBUG : public APlayerController
 	GENERATED_BODY()
 
 protected:
-	
-	UPROPERTY(EditAnywhere,Category = "Input")
+	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> _DebugAction;
 
 	virtual void SetupInputComponent() override;
 
 	void Debug(const FInputActionValue& Value);
-	
 };
-
-

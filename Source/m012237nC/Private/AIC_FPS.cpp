@@ -31,21 +31,19 @@ AAIC_FPS::AAIC_FPS()
 void AAIC_FPS::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	_AIPerception->OnTargetPerceptionUpdated.AddUniqueDynamic(this, &AAIC_FPS::Handle_TargetPerceptionUpdated);
 
+	_AIPerception->OnTargetPerceptionUpdated.AddUniqueDynamic(this, &AAIC_FPS::Handle_TargetPerceptionUpdated);
 }
 
 void AAIC_FPS::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
-	if(UKismetSystemLibrary::DoesImplementInterface(InPawn, UInputable::StaticClass()))
+	if (UKismetSystemLibrary::DoesImplementInterface(InPawn, UInputable::StaticClass()))
 	{
-
 		RunBehaviorTree(IInputable::Execute_GetBehaviorTree(InPawn));
 	}
-	
-	if(UKismetSystemLibrary::DoesImplementInterface(InPawn, UChangeWeapon::StaticClass()))
+
+	if (UKismetSystemLibrary::DoesImplementInterface(InPawn, UChangeWeapon::StaticClass()))
 	{
 		IChangeWeapon::Execute_UpdateWeapon(InPawn, _WeaponType);
 		UE_LOG(LogTemp, Warning, TEXT("calling update weapon"));
@@ -55,11 +53,11 @@ void AAIC_FPS::OnPossess(APawn* InPawn)
 ETeamAttitude::Type AAIC_FPS::GetTeamAttitudeTowards(const AActor& Other) const
 {
 	FGenericTeamId TeamIDNumber(FGenericTeamId::GetTeamIdentifier(&Other));
-	if(TeamIDNumber == FGenericTeamId(1))
+	if (TeamIDNumber == FGenericTeamId(1))
 	{
 		return ETeamAttitude::Friendly;
 	}
-	if(TeamIDNumber == FGenericTeamId(2))
+	if (TeamIDNumber == FGenericTeamId(2))
 	{
 		return ETeamAttitude::Hostile;
 	}
@@ -71,9 +69,9 @@ void AAIC_FPS::Handle_TargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulu
 	switch (Stimulus.Type)
 	{
 	case 0:
-		if(Actor == UGameplayStatics::GetPlayerPawn(GetWorld(), 0))
+		if (Actor == UGameplayStatics::GetPlayerPawn(GetWorld(), 0))
 		{
-			if(Stimulus.WasSuccessfullySensed())
+			if (Stimulus.WasSuccessfullySensed())
 			{
 				GetBlackboardComponent()->SetValueAsVector(FName("TargetPosition"), Actor->GetActorLocation());
 				GetBlackboardComponent()->SetValueAsObject(FName("TargetActor"), Actor);
@@ -88,6 +86,3 @@ void AAIC_FPS::Handle_TargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulu
 		return;
 	}
 }
-
-
-

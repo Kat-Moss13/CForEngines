@@ -16,7 +16,7 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Blackboard")
 	FBlackboardKeySelector _Key_Pawn;
-	
+
 private:
 	UPROPERTY(EditAnywhere, Category = "Blackboard", meta = (AllowPrivateAccess = "true"))
 	FBlackboardKeySelector _PathPointKey;

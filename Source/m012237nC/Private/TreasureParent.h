@@ -14,14 +14,13 @@ class M012237NC_API ATreasureParent : public AActor
 	GENERATED_BODY()
 
 public:
-
 	ATreasureParent();
 	UPROPERTY(BlueprintAssignable)
 	FOnOverlapSignature OnOverlap;
 
 	UFUNCTION(BlueprintNativeEvent)
 	void PlayTreasureSound(UTreasureComponent* target, AController* causer, int treasureValue);
-	
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<USphereComponent> _Collider;
@@ -29,5 +28,4 @@ protected:
 	TObjectPtr<UStaticMeshComponent> _Mesh;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UTreasureComponent> _Treasure;
-
 };

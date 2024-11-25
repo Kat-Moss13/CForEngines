@@ -17,7 +17,7 @@ void UTargetComponent::BeginPlay()
 
 	AActor* owner = GetOwner();
 	_Health = owner->FindComponentByClass<UHealthComponent>();
-	if(_Health == nullptr)
+	if (_Health == nullptr)
 	{
 		_Health = NewObject<UHealthComponent>(owner, TEXT("Health"));
 		owner->AddInstanceComponent(_Health);
@@ -42,6 +42,3 @@ void UTargetComponent::Handle_GameRuleRequestTargets()
 {
 	onTargetRegistered.Broadcast(this);
 }
-
-
-

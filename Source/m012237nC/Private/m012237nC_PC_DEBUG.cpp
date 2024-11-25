@@ -8,7 +8,7 @@ void Am012237nC_PC_DEBUG::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	if(UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent))
+	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent))
 	{
 		EnhancedInputComponent->BindAction(_DebugAction, ETriggerEvent::Triggered, this, &Am012237nC_PC_DEBUG::Debug);
 	}

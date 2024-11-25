@@ -11,14 +11,13 @@ UTreasureComponent::UTreasureComponent()
 }
 
 
-
 void UTreasureComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
 	AActor* owner = GetOwner();
 	_Collider = owner->FindComponentByClass<USphereComponent>();
-	if(_Collider == nullptr)
+	if (_Collider == nullptr)
 	{
 		_Collider = NewObject<USphereComponent>(owner, TEXT("Collider"));
 		owner->AddInstanceComponent(_Collider);
@@ -30,35 +29,25 @@ void UTreasureComponent::BeginPlay()
 
 	UGameRule_Treasure::OnRequestTreasures.AddUniqueDynamic(this, &UTreasureComponent::Handle_GameRuleRequestTreasure);
 	onTreasureRegistered.Broadcast(this);
-	
-	 
 }
 
-void UTreasureComponent::Handle_PickedUp(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void UTreasureComponent::Handle_PickedUp(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+                                         UPrimitiveComponent* OtherComp,
+                                         int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if(OtherActor == UGameplayStatics::GetPlayerPawn(GetWorld(), 0))
+	if (OtherActor == UGameplayStatics::GetPlayerPawn(GetWorld(), 0))
 	{
-	
 		Handle_TreasureDestroyed(this, OtherActor->GetInstigatorController(), _TreasureValue);
 	}
-	
 }
-
 
 
 void UTreasureComponent::Handle_GameRuleRequestTreasure()
 {
-	
 }
 
 void UTreasureComponent::Handle_TreasureDestroyed(UTreasureComponent* target, AController* causer, int treasureValue)
 {
-	
-	onPickedUp.Broadcast(this,causer, treasureValue);
+	onPickedUp.Broadcast(this, causer, treasureValue);
 	GetOwner()->Destroy();
 }
-
-
-
-

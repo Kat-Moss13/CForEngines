@@ -15,14 +15,13 @@ class M012237NC_API UBTTask_FindRandomLocation : public UBTTask_BlackboardBase
 	GENERATED_BODY()
 
 public:
-
 	UBTTask_FindRandomLocation();
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 
 	UPROPERTY(EditAnywhere, Category = "Blackboard")
 	FBlackboardKeySelector Key_Pawn;
-	
+
 private:
-	UPROPERTY(EditAnywhere,BlueprintReadWrite, category = "AI", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, category = "AI", meta = (AllowPrivateAccess = "true"))
 	float SearchRadius = 1500.f;
 };

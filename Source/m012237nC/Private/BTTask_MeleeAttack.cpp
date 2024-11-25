@@ -16,28 +16,27 @@ UBTTask_MeleeAttack::UBTTask_MeleeAttack()
 
 EBTNodeResult::Type UBTTask_MeleeAttack::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	auto const OutOfRange = !OwnerComp.GetBlackboardComponent()->GetValueAsBool(GetSelectedBlackboardKey());
-	if(OutOfRange)
+	const auto OutOfRange = !OwnerComp.GetBlackboardComponent()->GetValueAsBool(GetSelectedBlackboardKey());
+	if (OutOfRange)
 	{
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 		return EBTNodeResult::Succeeded;
 	}
-	
+
 	const UBlackboardComponent* BBComp = OwnerComp.GetBlackboardComponent();
 	UObject* pawn = BBComp->GetValueAsObject(_Key_Pawn.SelectedKeyName);
 
-	if(UKismetSystemLibrary::DoesImplementInterface(pawn, UCombat::StaticClass()))
+	if (UKismetSystemLibrary::DoesImplementInterface(pawn, UCombat::StaticClass()))
 	{
 		AIPawn = ICombat::Execute_GetSpecificPawn(pawn);
 	}
-	
-	if(UKismetSystemLibrary::DoesImplementInterface(pawn, UCombat::StaticClass()))
+
+	if (UKismetSystemLibrary::DoesImplementInterface(pawn, UCombat::StaticClass()))
 	{
-		if(MontageHasFinished(AIPawn))
+		if (MontageHasFinished(AIPawn))
 		{
 			ICombat::Execute_MeleeAttack(pawn);
 		}
-		
 	}
 
 	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);

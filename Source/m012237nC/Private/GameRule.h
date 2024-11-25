@@ -6,6 +6,7 @@
 class UGameRule;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGameRuleCompleteSignature, AController*, scorer);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FGameRulePointsScoredSignature, AController*, scorer, int, points);
 
 
@@ -15,7 +16,6 @@ class M012237NC_API UGameRule : public UActorComponent
 	GENERATED_BODY()
 
 public:
-
 	UGameRule();
 
 	FGameRuleCompleteSignature OnComplete;

@@ -7,10 +7,11 @@ UBTService_GetDistanceToTargetActor::UBTService_GetDistanceToTargetActor()
 	bNotifyBecomeRelevant = false;
 	bNotifyCeaseRelevant = false;
 
-	Key_Pawn.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(UBTService_GetDistanceToTargetActor, Key_Pawn), APawn::StaticClass());
-	Key_TargetActor.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(UBTService_GetDistanceToTargetActor, Key_TargetActor), AActor::StaticClass());
+	Key_Pawn.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(UBTService_GetDistanceToTargetActor, Key_Pawn),
+	                         APawn::StaticClass());
+	Key_TargetActor.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(UBTService_GetDistanceToTargetActor, Key_TargetActor),
+	                                AActor::StaticClass());
 	Key_Distance.AddFloatFilter(this, GET_MEMBER_NAME_CHECKED(UBTService_GetDistanceToTargetActor, Key_Distance));
-	
 }
 
 void UBTService_GetDistanceToTargetActor::InitializeFromAsset(UBehaviorTree& Asset)
@@ -18,7 +19,7 @@ void UBTService_GetDistanceToTargetActor::InitializeFromAsset(UBehaviorTree& Ass
 	Super::InitializeFromAsset(Asset);
 
 	UBlackboardData* BBAsset = GetBlackboardAsset();
-	if(ensure(BBAsset))
+	if (ensure(BBAsset))
 	{
 		Key_Pawn.ResolveSelectedKey(*BBAsset);
 		Key_TargetActor.ResolveSelectedKey(*BBAsset);
@@ -27,7 +28,7 @@ void UBTService_GetDistanceToTargetActor::InitializeFromAsset(UBehaviorTree& Ass
 }
 
 void UBTService_GetDistanceToTargetActor::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory,
-	float DeltaSeconds)
+                                                   float DeltaSeconds)
 {
 	UBlackboardComponent* BBComp = OwnerComp.GetBlackboardComponent();
 	float dist = (Cast<AActor>(BBComp->GetValueAsObject(Key_Pawn.SelectedKeyName))->GetActorLocation() -

@@ -1,5 +1,4 @@
-﻿
-#include "BTTask_Investigate.h"
+﻿#include "BTTask_Investigate.h"
 
 EBTNodeResult::Type UBTTask_Investigate::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {

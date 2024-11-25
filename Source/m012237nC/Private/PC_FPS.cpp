@@ -1,9 +1,7 @@
-﻿
-#include "PC_FPS.h"
+﻿#include "PC_FPS.h"
 
-#include "AIHelpers.h"
+
 #include "ChangeWeapon.h"
-#include "Combat.h"
 #include "P_FPS.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
@@ -12,7 +10,6 @@
 #include "Widget_HUD.h"
 #include "Widget_WinScreen.h"
 #include "Blueprint/UserWidget.h"
-#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 
@@ -25,26 +22,24 @@ FGenericTeamId APC_FPS::GetGenericTeamId() const
 void APC_FPS::BeginPlay()
 {
 	Super::BeginPlay();
-	if(_HUDWidgetClass)
+	if (_HUDWidgetClass)
 	{
 		_HUDWidget = CreateWidget<UWidget_HUD, APC_FPS*>(this, _HUDWidgetClass.Get());
-		
 	}
-	if(_WinWidgetClass)
+	if (_WinWidgetClass)
 	{
 		_WinWidget = CreateWidget<UWidget_WinScreen, APC_FPS*>(this, _WinWidgetClass.Get());
-		UE_LOG(LogTemp, Display, TEXT("exists"));
+		
 	}
 	bEnableClickEvents = true;
 	PrimaryActorTick.bCanEverTick = true;
-	
 }
 
 void APC_FPS::ChooseWeapon_Implementation()
 {
 	SetPause(true);
 	SetShowMouseCursor(true);
-	if(_GunWidgetClass)
+	if (_GunWidgetClass)
 	{
 		_GunWidget = CreateWidget<UGunSelectionMenu, APC_FPS*>(this, _GunWidgetClass.Get());
 		_GunWidget->AddToViewport();
@@ -56,25 +51,29 @@ void APC_FPS::ChooseWeapon_Implementation()
 void APC_FPS::FinishGame_Implementation()
 {
 	_HUDWidget->RemoveFromParent();
-	_WinWidget->AddToViewport();
+	if (_WinWidget)
+	{
+		_WinWidget->AddToViewport();
+		SetPause(true);
+		SetShowMouseCursor(true);
+	}
 }
 
 void APC_FPS::GameStart()
 {
 	SetPause(false);
-	SetShowMouseCursor(false);	
+	SetShowMouseCursor(false);
 	_GunWidget->RemoveFromParent();
 	_HUDWidget->AddToViewport();
 	_HUDWidget->UpdateHeatlh(1);
 	ReloadPressed();
-	
 }
 
 void APC_FPS::ChangeWeapon(UWeaponType* Weapon)
 {
-	if(APawn* currentPawn = GetPawn())
+	if (APawn* currentPawn = GetPawn())
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UChangeWeapon::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(currentPawn, UChangeWeapon::StaticClass()))
 		{
 			IChangeWeapon::Execute_UpdateWeapon(currentPawn, Weapon);
 		}
@@ -84,7 +83,7 @@ void APC_FPS::ChangeWeapon(UWeaponType* Weapon)
 void APC_FPS::SetupInputComponent()
 {
 	Super::SetupInputComponent();
-	if(UEnhancedInputComponent* EIP = CastChecked<UEnhancedInputComponent>(InputComponent))
+	if (UEnhancedInputComponent* EIP = CastChecked<UEnhancedInputComponent>(InputComponent))
 	{
 		EIP->BindAction(_LookAction, ETriggerEvent::Triggered, this, &APC_FPS::Look);
 		EIP->BindAction(_MoveAction, ETriggerEvent::Triggered, this, &APC_FPS::Move);
@@ -103,8 +102,6 @@ void APC_FPS::SetupInputComponent()
 		EIP->BindAction(_LeanRightAction, ETriggerEvent::Completed, this, &APC_FPS::LeanRightReleased);
 		EIP->BindAction(_Reload, ETriggerEvent::Started, this, &APC_FPS::ReloadPressed);
 	}
-
-	
 }
 
 void APC_FPS::AddScore_Implementation(int points)
@@ -127,9 +124,9 @@ void APC_FPS::Look(const FInputActionValue& value)
 {
 	FVector2D LookVector = value.Get<FVector2D>();
 
-	if(APawn* currentPawn = GetPawn())
+	if (APawn* currentPawn = GetPawn())
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
 		{
 			IInputable::Execute_Input_Look(currentPawn, LookVector);
 		}
@@ -139,9 +136,9 @@ void APC_FPS::Look(const FInputActionValue& value)
 void APC_FPS::Move(const FInputActionValue& value)
 {
 	FVector2D MoveVector = value.Get<FVector2D>();
-	if(APawn* currentPawn = GetPawn())
+	if (APawn* currentPawn = GetPawn())
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
 		{
 			IInputable::Execute_Input_Move(currentPawn, MoveVector);
 		}
@@ -150,9 +147,9 @@ void APC_FPS::Move(const FInputActionValue& value)
 
 void APC_FPS::JumpPressed()
 {
-	if(APawn* currentPawn = GetPawn())
+	if (APawn* currentPawn = GetPawn())
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
 		{
 			IInputable::Execute_Input_JumpPressed(currentPawn);
 		}
@@ -161,9 +158,9 @@ void APC_FPS::JumpPressed()
 
 void APC_FPS::JumpReleased()
 {
-	if(APawn* currentPawn = GetPawn())
+	if (APawn* currentPawn = GetPawn())
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
 		{
 			IInputable::Execute_Input_JumpReleased(currentPawn);
 		}
@@ -172,9 +169,9 @@ void APC_FPS::JumpReleased()
 
 void APC_FPS::FirePressed()
 {
-	if(APawn* currentPawn = GetPawn())
+	if (APawn* currentPawn = GetPawn())
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
 		{
 			IInputable::Execute_Input_FirePressed(currentPawn);
 		}
@@ -183,9 +180,9 @@ void APC_FPS::FirePressed()
 
 void APC_FPS::FireReleased()
 {
-	if(APawn* currentPawn = GetPawn())
+	if (APawn* currentPawn = GetPawn())
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
 		{
 			IInputable::Execute_Input_FireReleased(currentPawn);
 		}
@@ -194,9 +191,9 @@ void APC_FPS::FireReleased()
 
 void APC_FPS::InteractPressed()
 {
-	if(APawn* currentPawn = GetPawn())
+	if (APawn* currentPawn = GetPawn())
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
 		{
 			IInputable::Execute_Input_InteractPressed(currentPawn, _CanExit);
 		}
@@ -205,9 +202,9 @@ void APC_FPS::InteractPressed()
 
 void APC_FPS::CrouchPressed()
 {
-	if(APawn* currentPawn = GetPawn())
+	if (APawn* currentPawn = GetPawn())
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
 		{
 			IInputable::Execute_Input_CrouchPressed(currentPawn);
 		}
@@ -216,9 +213,9 @@ void APC_FPS::CrouchPressed()
 
 void APC_FPS::CrouchReleased()
 {
-	if(APawn* currentPawn = GetPawn())
+	if (APawn* currentPawn = GetPawn())
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
 		{
 			IInputable::Execute_Input_CrouchReleased(currentPawn);
 		}
@@ -227,9 +224,9 @@ void APC_FPS::CrouchReleased()
 
 void APC_FPS::SprintPressed()
 {
-	if(APawn* currentPawn = GetPawn())
+	if (APawn* currentPawn = GetPawn())
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
 		{
 			IInputable::Execute_Input_SprintPressed(currentPawn);
 		}
@@ -238,9 +235,9 @@ void APC_FPS::SprintPressed()
 
 void APC_FPS::SprintReleased()
 {
-	if(APawn* currentPawn = GetPawn())
+	if (APawn* currentPawn = GetPawn())
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
 		{
 			IInputable::Execute_Input_SprintReleased(currentPawn);
 		}
@@ -249,9 +246,9 @@ void APC_FPS::SprintReleased()
 
 void APC_FPS::LeanLeftPressed()
 {
-	if(APawn* currentPawn = GetPawn())
+	if (APawn* currentPawn = GetPawn())
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
 		{
 			IInputable::Execute_Input_LeanLeftPressed(currentPawn);
 		}
@@ -260,9 +257,9 @@ void APC_FPS::LeanLeftPressed()
 
 void APC_FPS::LeanRightPressed()
 {
-	if(APawn* currentPawn = GetPawn())
+	if (APawn* currentPawn = GetPawn())
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
 		{
 			IInputable::Execute_Input_LeanRightPressed(currentPawn);
 		}
@@ -271,9 +268,9 @@ void APC_FPS::LeanRightPressed()
 
 void APC_FPS::LeanLeftReleased()
 {
-	if(APawn* currentPawn = GetPawn())
+	if (APawn* currentPawn = GetPawn())
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
 		{
 			IInputable::Execute_Input_LeanLeftReleased(currentPawn);
 		}
@@ -282,9 +279,9 @@ void APC_FPS::LeanLeftReleased()
 
 void APC_FPS::LeanRightReleased()
 {
-	if(APawn* currentPawn = GetPawn())
+	if (APawn* currentPawn = GetPawn())
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
 		{
 			IInputable::Execute_Input_LeanRightReleased(currentPawn);
 		}
@@ -293,9 +290,9 @@ void APC_FPS::LeanRightReleased()
 
 void APC_FPS::ReloadPressed()
 {
-	if(APawn* currentPawn = GetPawn())
+	if (APawn* currentPawn = GetPawn())
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
 		{
 			IInputable::Execute_Input_ReloadPressed(currentPawn);
 		}
@@ -303,14 +300,14 @@ void APC_FPS::ReloadPressed()
 }
 
 
-
 void APC_FPS::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
-	if(UEnhancedInputLocalPlayerSubsystem* subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
+	if (UEnhancedInputLocalPlayerSubsystem* subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(
+		GetLocalPlayer()))
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(InPawn, UInputable::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(InPawn, UInputable::StaticClass()))
 		{
 			subsystem->AddMappingContext(IInputable::Execute_GetMappingContext(InPawn), 0);
 			_PlayerPawn = IInputable::Execute_GetPawn(InPawn);
@@ -318,16 +315,9 @@ void APC_FPS::OnPossess(APawn* InPawn)
 			ReloadPressed();
 		}
 	}
-	
-
 }
 
 void APC_FPS::UpdateHealth(float newHealth, float maxHealth, float change)
 {
-	_HUDWidget->UpdateHeatlh(newHealth/100.f);
+	_HUDWidget->UpdateHeatlh(newHealth / 100.f);
 }
-
-
-
-
-

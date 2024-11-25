@@ -21,7 +21,6 @@ class M012237NC_API IChangeWeapon
 {
 	GENERATED_BODY()
 
-	
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void UpdateWeapon(UWeaponType* Weapon);

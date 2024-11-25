@@ -1,3 +1,1 @@
-﻿
-
-#include "WeaponType.h"
+﻿#include "WeaponType.h"
