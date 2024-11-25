@@ -1,6 +1,7 @@
 ﻿
 #include "GM_FPS.h"
 
+#include "Door_Interact.h"
 #include "GameRule.h"
 #include "Scorable.h"
 #include "WeaponHolder.h"
@@ -52,7 +53,14 @@ void AGM_FPS::HandleMatchIsWaitingToStart()
 			_GameRulesLeft++;
 		}
 	}
-	
+
+	for(UActorComponent* comp : outComponents)
+	{
+		if(ADoor_Interact* doorInteract = Cast<ADoor_Interact>(comp))
+		{
+			doorInteract->OnSuccess.AddUniqueDynamic(this, &AGM_FPS::WinGame);
+		}
+	}
 	GetWorld()->GetTimerManager().SetTimer(_TimerDecreaseCountdown, this, &AGM_FPS::DecreaseCountdown, 1.f, false);
 	Super::HandleMatchIsWaitingToStart();
 }
@@ -115,6 +123,14 @@ void AGM_FPS::DecreaseCountdown()
 	else
 	{
 		GetWorld()->GetTimerManager().SetTimer(_TimerDecreaseCountdown, this, &AGM_FPS::DecreaseCountdown, 1.f, false);
+	}
+}
+
+void AGM_FPS::WinGame(AController* player)
+{
+	if(UKismetSystemLibrary::DoesImplementInterface(player, UScorable::StaticClass()))
+	{
+		IScorable::Execute_FinishGame(player);
 	}
 }
 

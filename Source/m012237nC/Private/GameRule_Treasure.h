@@ -18,6 +18,8 @@ public:
 	static inline FGRTreasureRequestTreasuresSignature OnRequestTreasures;
 
 	virtual void Init() override;
+	
+	
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

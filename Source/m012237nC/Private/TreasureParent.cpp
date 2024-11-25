@@ -14,6 +14,16 @@ ATreasureParent::ATreasureParent()
 	_Mesh->SetupAttachment(RootComponent);
 
 	_Treasure = CreateDefaultSubobject<UTreasureComponent>(TEXT("Treasure"));
+
+	_Treasure->onPickedUp.AddUniqueDynamic(this, &ATreasureParent::PlayTreasureSound);
 }
+
+
+void ATreasureParent::PlayTreasureSound_Implementation(UTreasureComponent* target, AController* causer, int treasureValue)
+{
+	
+}
+
+
 
 

@@ -325,6 +325,7 @@ void AP_FPS::Handle_HealthDead(AController* causer)
 	else
 	{
 		OnPlayerDeath.Broadcast();
+		UGameplayStatics::OpenLevel(this, "KFM_Map", true);
 		                      
 	}
 	

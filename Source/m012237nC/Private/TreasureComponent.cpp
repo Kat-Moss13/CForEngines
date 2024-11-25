@@ -39,6 +39,7 @@ void UTreasureComponent::Handle_PickedUp(UPrimitiveComponent* OverlappedComp, AA
 {
 	if(OtherActor == UGameplayStatics::GetPlayerPawn(GetWorld(), 0))
 	{
+	
 		Handle_TreasureDestroyed(this, OtherActor->GetInstigatorController(), _TreasureValue);
 	}
 	

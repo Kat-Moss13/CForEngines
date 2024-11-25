@@ -9,6 +9,7 @@
 #include "GameFramework/PlayerController.h"
 #include "PC_FPS.generated.h"
 
+class UWidget_WinScreen;
 class UWeaponType;
 class UGunSelectionMenu;
 struct FInputActionValue;
@@ -69,7 +70,13 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UGunSelectionMenu> _GunWidgetClass;
-	TObjectPtr<UGunSelectionMenu> _GunWidget;
+	TObjectPtr<UGunSelectionMenu> _GunWidget;#
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UWidget_WinScreen> _WinWidgetClass;
+	TObjectPtr<UWidget_WinScreen> _WinWidget;
+
+	
 
 	virtual void BeginPlay() override;
 
@@ -80,6 +87,7 @@ protected:
 	virtual void ExitTrue_Implementation() override;
 	virtual void UpdateAmmoUI_Implementation(int CurrentAmmo, int MaxAmmo) override;
 	virtual void ChooseWeapon_Implementation() override;
+	virtual void FinishGame_Implementation() override;
 
 	void Look(const FInputActionValue& value);
 	void Move(const FInputActionValue& value);

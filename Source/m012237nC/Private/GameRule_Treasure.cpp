@@ -17,6 +17,8 @@ void UGameRule_Treasure::Init()
 	OnRequestTreasures.Broadcast();
 }
 
+
+
 void UGameRule_Treasure::Handle_TreasureRegistered(UTreasureComponent* treasure)
 {
 	if(_Treasures.Contains(treasure)) {return;}

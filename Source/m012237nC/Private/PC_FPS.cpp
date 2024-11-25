@@ -10,6 +10,7 @@
 #include "GunSelectionMenu.h"
 #include "Inputable.h"
 #include "Widget_HUD.h"
+#include "Widget_WinScreen.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -29,6 +30,10 @@ void APC_FPS::BeginPlay()
 		_HUDWidget = CreateWidget<UWidget_HUD, APC_FPS*>(this, _HUDWidgetClass.Get());
 		
 	}
+	if(_WinWidgetClass)
+	{
+		_WinWidget = CreateWidget<UWidget_WinScreen, APC_FPS*>(this, _WinWidgetClass.Get());
+	}
 	bEnableClickEvents = true;
 	PrimaryActorTick.bCanEverTick = true;
 	
@@ -45,6 +50,12 @@ void APC_FPS::ChooseWeapon_Implementation()
 		_GunWidget->OnStart.AddUniqueDynamic(this, &APC_FPS::GameStart);
 		_GunWidget->OnChangedWeapon.AddUniqueDynamic(this, &APC_FPS::ChangeWeapon);
 	}
+}
+
+void APC_FPS::FinishGame_Implementation()
+{
+	_HUDWidget->RemoveFromParent();
+	_WinWidget->AddToViewport();
 }
 
 void APC_FPS::GameStart()

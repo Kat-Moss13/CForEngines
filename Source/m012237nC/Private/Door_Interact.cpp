@@ -13,7 +13,7 @@ void ADoor_Interact::Interact_Implementation(AController* causer, bool canExit)
 	Super::Interact_Implementation(causer, canExit);
 	if (canExit)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Exit"));
+		OnSuccess.Broadcast(causer);
 	}
 }
 

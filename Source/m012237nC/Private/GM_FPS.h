@@ -49,6 +49,9 @@ protected:
 	UFUNCTION()
 	void DecreaseCountdown();
 
+	UFUNCTION()
+	void WinGame(AController* player);
+
 private:
 	UFUNCTION()
 	void Handle_GameRuleComplete(AController* scorer);

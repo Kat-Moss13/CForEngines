@@ -19,6 +19,8 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnOverlapSignature OnOverlap;
 
+	UFUNCTION(BlueprintNativeEvent)
+	void PlayTreasureSound(UTreasureComponent* target, AController* causer, int treasureValue);
 	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)

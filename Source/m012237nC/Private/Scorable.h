@@ -22,4 +22,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent)
 	void ExitTrue();
+
+	UFUNCTION(BlueprintNativeEvent)
+	void FinishGame();
 };
